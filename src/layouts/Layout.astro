@@ -106,10 +106,3 @@ const urlCanonica = canonical ?? new URL(Astro.url.pathname, Astro.site).toStrin
   </body>
 </html>
 
-<style is:global>
-  /* Estado inicial: el body se vuelve interactivo cuando el loader termina */
-  body:not(.is-ready) main {
-    /* Evita scroll mientras el loader corre */
-    overflow: hidden;
-  }
-</style>

@@ -120,40 +120,25 @@ import { galeria } from '../data/imagenes';
     border-color: var(--color-tomate);
   }
 
-  /* ── MASONRY ────────────────────────────────────────────────────── */
+  /* ── GRID ORDENADO 3x3 ──────────────────────────────────────────── */
   .masonry {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 0.8rem;
-    grid-auto-flow: dense;
   }
 
-  @media (min-width: 768px) {
-    .masonry { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-  }
-
-  @media (min-width: 1200px) {
-    .masonry { grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+  @media (min-width: 900px) {
+    .masonry { grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
   }
 
   .masonry__cell {
     position: relative;
     overflow: hidden;
     border-radius: var(--radius);
-    aspect-ratio: 1;
+    aspect-ratio: 4 / 5;
     cursor: zoom-in;
     transition: opacity var(--t-med) var(--ease-out),
                 transform var(--t-med) var(--ease-out);
-  }
-
-  /* Variantes para romper la grilla y crear ritmo masonry */
-  .masonry__cell--0 { aspect-ratio: 4 / 5; }
-  .masonry__cell--2 { aspect-ratio: 5 / 4; }
-  .masonry__cell--3 { aspect-ratio: 4 / 5; grid-row: span 2; }
-  .masonry__cell--4 { aspect-ratio: 1; }
-
-  @media (min-width: 768px) {
-    .masonry__cell--3 { aspect-ratio: 1 / 1.6; }
   }
 
   .masonry__cell.is-hidden {

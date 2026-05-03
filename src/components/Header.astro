@@ -214,23 +214,40 @@ const ruta = Astro.url.pathname;
     transform: translateY(-4px) rotate(-45deg);
   }
 
-  /* Mobile menu */
+  /* Mobile menu — oculto por defecto, slide-in al abrir */
   .header__mobile {
     position: fixed;
     inset: 0;
     background-color: var(--color-carbon);
     color: var(--color-crema);
-    display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 6rem var(--gutter) var(--space-xl);
     transform: translateY(-100%);
-    transition: transform var(--t-med) var(--ease-in-out);
-    z-index: -1;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform var(--t-med) var(--ease-in-out),
+                opacity var(--t-med) var(--ease-in-out),
+                visibility 0s linear var(--t-med);
+    z-index: 49;
+    display: none;  /* oculto en desktop, se reactiva en mobile */
+  }
+
+  /* En mobile: se muestra como flex */
+  @media (max-width: 1023px) {
+    .header__mobile {
+      display: flex;
+    }
   }
 
   .header__mobile.is-open {
     transform: translateY(0);
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transition: transform var(--t-med) var(--ease-in-out),
+                opacity var(--t-med) var(--ease-in-out);
   }
 
   .header__mobile-list {

@@ -4,29 +4,25 @@
  * @descripcion Variables CSS, reset, tipografías y utilidades base.
  *              Define la paleta Pin Pun, escalas tipográficas y estilos
  *              transversales que usan todas las páginas y componentes.
- * @version    1.0.0
+ * @version    1.1.0
  */
 
-/* ── Tipografías de Google Fonts ──────────────────────────────────────────
-   Fraunces  → títulos editoriales (display serif moderna con personalidad)
-   Inter     → cuerpo y UI (legibilidad impecable)
-   Caveat    → acentos manuscritos, tipo cartelería de pizzería
-*/
+/* ── Tipografías de Google Fonts ──────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap');
 
 /* ── Variables del sistema de diseño ─────────────────────────────────── */
 :root {
-  /* Paleta principal */
-  --color-carbon: #0A0908;        /* base oscura, casi negro con calidez */
-  --color-crema: #F5EFE6;         /* fondo neutro napolitano */
-  --color-crema-soft: #EDE5D6;    /* variante más cálida */
-  --color-tomate: #C73E1D;        /* rojo San Marzano */
-  --color-tomate-dark: #9A2F15;   /* hover/acento profundo */
-  --color-basilico: #3D4A2A;      /* verde oliva profundo */
-  --color-dorado: #C9A87C;        /* dorado champagne, acento premium */
-  --color-dorado-soft: #D9BC93;   /* dorado más claro para hovers */
+  /* Paleta */
+  --color-carbon: #0A0908;
+  --color-crema: #F5EFE6;
+  --color-crema-soft: #EDE5D6;
+  --color-tomate: #C73E1D;
+  --color-tomate-dark: #9A2F15;
+  --color-basilico: #3D4A2A;
+  --color-dorado: #C9A87C;
+  --color-dorado-soft: #D9BC93;
 
-  /* Grises tipográficos sobre crema */
+  /* Grises sobre crema */
   --color-text: #1A1815;
   --color-text-soft: #4A453E;
   --color-text-mute: #8A8278;
@@ -37,26 +33,26 @@
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
   --font-script: 'Caveat', cursive;
 
-  /* Escala tipográfica fluida (clamp para responsive sin breakpoints) */
+  /* Escala tipográfica fluida */
   --fs-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem);
   --fs-sm: clamp(0.875rem, 0.85rem + 0.2vw, 1rem);
   --fs-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
   --fs-md: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
   --fs-lg: clamp(1.5rem, 1.3rem + 0.8vw, 2rem);
   --fs-xl: clamp(2rem, 1.6rem + 1.8vw, 3.25rem);
-  --fs-2xl: clamp(2.75rem, 2rem + 3.2vw, 5rem);
-  --fs-3xl: clamp(4rem, 2.5rem + 6.5vw, 9rem);
-  --fs-display: clamp(5rem, 3rem + 9vw, 13rem);
+  --fs-2xl: clamp(2.5rem, 1.9rem + 2.8vw, 4.5rem);
+  --fs-3xl: clamp(3.5rem, 2.3rem + 5.5vw, 7.5rem);
+  --fs-display: clamp(4rem, 2.5rem + 7vw, 10rem);
 
-  /* Espaciado base */
+  /* Espaciado */
   --space-2xs: 0.25rem;
   --space-xs: 0.5rem;
   --space-sm: 1rem;
   --space-md: 1.5rem;
   --space-lg: 2.5rem;
   --space-xl: 4rem;
-  --space-2xl: 6rem;
-  --space-3xl: 10rem;
+  --space-2xl: 5.5rem;
+  --space-3xl: 8rem;
 
   /* Layout */
   --max-width: 1440px;
@@ -86,7 +82,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  scroll-behavior: auto; /* Lenis maneja el smooth scroll */
+  scroll-behavior: auto;
 }
 
 body {
@@ -123,9 +119,7 @@ button {
   color: inherit;
 }
 
-input,
-textarea,
-select {
+input, textarea, select {
   font: inherit;
 }
 
@@ -175,7 +169,7 @@ h4 { font-size: var(--fs-md); }
   padding-block: var(--space-3xl);
 }
 
-/* ── Cuerpo del sitio cuando se aplica modo oscuro local ────────────── */
+/* ── Tema oscuro local ──────────────────────────────────────────────── */
 .theme-dark {
   background-color: var(--color-carbon);
   color: var(--color-crema);
@@ -205,7 +199,8 @@ h4 { font-size: var(--fs-md); }
   position: relative;
   overflow: hidden;
   transition: color var(--t-fast) var(--ease-out),
-              border-color var(--t-fast) var(--ease-out);
+              border-color var(--t-fast) var(--ease-out),
+              background-color var(--t-fast) var(--ease-out);
   isolation: isolate;
 }
 
@@ -214,7 +209,7 @@ h4 { font-size: var(--fs-md); }
   position: absolute;
   inset: 0;
   background-color: var(--color-tomate);
-  transform: translateY(100%);
+  transform: translateY(101%);
   transition: transform var(--t-med) var(--ease-out);
   z-index: -1;
 }
@@ -266,56 +261,28 @@ h4 { font-size: var(--fs-md); }
   background-color: currentColor;
 }
 
-/* ── Animaciones de revelado controladas por GSAP ─────────────────────
-   Estado inicial — JS quita la clase cuando entra en viewport.
+/* ── Reveals: estrategia resiliente ────────────────────────────────────
+   El contenido es visible por defecto. Solo se oculta cuando el script
+   marca <html class="js-ready">. Si JS falla, el sitio se ve normal.
 */
-.reveal {
+.reveal,
+[data-split] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.9s var(--ease-out),
+              transform 0.9s var(--ease-out);
+}
+
+html.js-ready .reveal,
+html.js-ready [data-split] {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(28px);
 }
 
-.reveal-line {
-  overflow: hidden;
-  display: block;
-}
-
-.reveal-line > * {
-  display: inline-block;
-  transform: translateY(110%);
-}
-
-.split-char {
-  display: inline-block;
-  will-change: transform;
-}
-
-/* ── Cursor custom ──────────────────────────────────────────────────── */
-.cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 12px;
-  height: 12px;
-  background-color: var(--color-tomate);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width var(--t-fast) var(--ease-out),
-              height var(--t-fast) var(--ease-out),
-              background-color var(--t-fast) var(--ease-out);
-  mix-blend-mode: difference;
-}
-
-.cursor.is-hover {
-  width: 48px;
-  height: 48px;
-  background-color: var(--color-dorado);
-}
-
-/* En móvil ocultamos el cursor custom */
-@media (hover: none) {
-  .cursor { display: none; }
+html.js-ready .reveal.is-visible,
+html.js-ready [data-split].is-visible {
+  opacity: 1;
+  transform: none;
 }
 
 /* ── Marquee infinito ───────────────────────────────────────────────── */
@@ -331,7 +298,7 @@ h4 { font-size: var(--fs-md); }
   display: flex;
   gap: 4rem;
   flex-shrink: 0;
-  animation: marquee-scroll 40s linear infinite;
+  animation: marquee-scroll 45s linear infinite;
   white-space: nowrap;
 }
 
@@ -375,6 +342,26 @@ h4 { font-size: var(--fs-md); }
   transition: width 0.1s linear;
 }
 
+/* ── Hover unificado de imágenes en wrappers ─────────────────────────
+   Cualquier elemento con [data-clip] o .media-zoom hace zoom suave en hover.
+*/
+[data-clip],
+.media-zoom {
+  overflow: hidden;
+  position: relative;
+}
+
+[data-clip] img,
+.media-zoom img {
+  transition: transform 1.2s var(--ease-out),
+              filter 0.6s var(--ease-out);
+}
+
+[data-clip]:hover img,
+.media-zoom:hover img {
+  transform: scale(1.06);
+}
+
 /* ── Accesibilidad: respetar preferencias de movimiento ──────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -385,6 +372,11 @@ h4 { font-size: var(--fs-md); }
     transition-duration: 0.01ms !important;
   }
   .marquee__track { animation: none; }
+  html.js-ready .reveal,
+  html.js-ready [data-split] {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ── Selección de texto ──────────────────────────────────────────────── */
@@ -393,7 +385,7 @@ h4 { font-size: var(--fs-md); }
   color: var(--color-crema);
 }
 
-/* ── Scroll bar custom (solo desktop) ────────────────────────────────── */
+/* ── Scrollbar custom (solo desktop) ─────────────────────────────────── */
 @media (min-width: 1024px) {
   ::-webkit-scrollbar {
     width: 8px;
@@ -408,6 +400,67 @@ h4 { font-size: var(--fs-md); }
   }
 }
 
+/* ── Microinteracciones globales ─────────────────────────────────────── */
+
+/* Links inline (dentro de párrafos) — underline animado */
+p a:not(.btn) {
+  position: relative;
+  color: var(--color-tomate);
+  font-weight: 500;
+  transition: color var(--t-fast) var(--ease-out);
+}
+
+p a:not(.btn)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(1);
+  transform-origin: right;
+  transition: transform var(--t-med) var(--ease-out);
+}
+
+p a:not(.btn):hover::after {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Transición global suave en color/bg cambios entre secciones */
+section {
+  transition: background-color 0.4s var(--ease-out);
+}
+
+/* Imágenes: pequeño "lift" en cards al hacer hover en el contenedor */
+.lift {
+  transition: transform var(--t-med) var(--ease-out),
+              box-shadow var(--t-med) var(--ease-out);
+}
+
+.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -20px rgba(10, 9, 8, 0.2);
+}
+
+/* Texto destacado en bajadas (em dentro de párrafos editoriales) */
+em {
+  font-style: italic;
+  color: var(--color-tomate);
+}
+
+.theme-dark em {
+  color: var(--color-dorado);
+}
+
+/* Foco accesible — outline visible al navegar con tab */
+:focus-visible {
+  outline: 2px solid var(--color-tomate);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
 /* ── Loader inicial ─────────────────────────────────────────────────── */
 .loader {
   position: fixed;
@@ -420,6 +473,8 @@ h4 { font-size: var(--fs-md); }
   flex-direction: column;
   gap: 1rem;
   color: var(--color-crema);
+  transition: opacity 0.7s var(--ease-out),
+              transform 0.7s var(--ease-out);
 }
 
 .loader__year {
@@ -440,5 +495,7 @@ h4 { font-size: var(--fs-md); }
 }
 
 .loader.is-done {
+  opacity: 0;
+  transform: translateY(-100%);
   pointer-events: none;
 }
