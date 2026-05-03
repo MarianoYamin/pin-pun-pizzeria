@@ -1,0 +1,464 @@
+---
+/**
+ * @archivo    contacto.astro
+ * @modulo     Página Contacto
+ * @descripcion Locales (Almagro + Villa Urquiza), horarios, teléfonos,
+ *              redes, mapa de Google embebido y FAQ corta.
+ * @version    1.0.0
+ */
+
+import Layout from '../layouts/Layout.astro';
+import Marquee from '../components/Marquee.astro';
+import { negocio } from '../data/contenido';
+import { ambiente } from '../data/imagenes';
+
+const faq = [
+  {
+    pregunta: '¿Toman reservas?',
+    respuesta: 'No, atendemos por orden de llegada. Para grupos grandes (más de 8 personas) avisanos por teléfono con un día de anticipación y te reservamos sector.',
+  },
+  {
+    pregunta: '¿Cobran cubierto?',
+    respuesta: 'Nunca cobramos cubierto. Tampoco hay mínimo de consumo. Podés venir solo a tomar una porción al paso si querés.',
+  },
+  {
+    pregunta: '¿Hacen pedidos para llevar?',
+    respuesta: 'Sí. Podés pedir presencialmente o por teléfono al 11 4862-3260. Las pizzas se hornean al pedido, calculá entre 12 y 18 minutos de preparación.',
+  },
+  {
+    pregunta: '¿Tienen opciones sin TACC y vegetarianas?',
+    respuesta: 'Sí. Avisanos al pedir y te confirmamos qué variedades funcionan. La cocina trabaja con cuidado para evitar contaminación cruzada.',
+  },
+  {
+    pregunta: '¿Aceptan tarjetas?',
+    respuesta: 'Aceptamos efectivo, tarjetas de débito y crédito (Visa, Mastercard), Mercado Pago y transferencia.',
+  },
+  {
+    pregunta: '¿Hay estacionamiento?',
+    respuesta: 'Estacionamiento medido en Av. Corrientes y calles laterales. La estación de subte Medrano (línea B) está a 50 metros y muchas líneas de colectivo paran cerca.',
+  },
+];
+---
+
+<Layout
+  titulo="Contacto · Pin Pun · Almagro y Villa Urquiza"
+  descripcion="Av. Corrientes 3954, Almagro · La Pampa 5201, Villa Urquiza. Pin Pun pizzería desde 1927. Teléfono, horarios, mapa y formas de contacto."
+>
+
+  {/* ── PORTADA ──────────────────────────────────────────────────── */}
+  <section class="cont-hero">
+    <div class="container cont-hero__inner">
+      <p class="eyebrow reveal">Contacto</p>
+      <h1 class="cont-hero__title" data-split>
+        Te esperamos en Almagro y Villa Urquiza.
+      </h1>
+      <p class="cont-hero__sub reveal">
+        Dos locales, mismo equipo, misma masa. Sin reservas, sin cubierto, con todo el barrio.
+      </p>
+    </div>
+  </section>
+
+  {/* ── LOCALES ──────────────────────────────────────────────────── */}
+  <section class="section locales">
+    <div class="container locales__grid">
+      {negocio.ubicaciones.map((local, idx) => (
+        <article class="local reveal" data-cursor>
+          <span class="local__num">0{idx + 1}</span>
+          <h2 class="local__nombre">{local.nombre}</h2>
+          <p class="local__direccion">{local.direccion}</p>
+          <p class="local__ciudad">{local.ciudad}</p>
+
+          <div class="local__bloque">
+            <span class="local__label">Horario</span>
+            <p class="local__valor">{local.horarios}</p>
+          </div>
+
+          <div class="local__bloque">
+            <span class="local__label">Teléfono</span>
+            {local.telefonos.map((tel) => (
+              <a href={`tel:${tel.replace(/\s/g, '')}`} class="local__valor local__tel">{tel}</a>
+            ))}
+          </div>
+
+          <a href={local.mapsUrl} target="_blank" rel="noopener noreferrer" class="btn btn--primary local__cta" data-magnetic>
+            Cómo llegar →
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  {/* ── MAPA ─────────────────────────────────────────────────────── */}
+  <section class="section mapa">
+    <div class="container">
+      <header class="mapa__head">
+        <p class="eyebrow reveal">Ubicación principal</p>
+        <h2 class="mapa__t" data-split>
+          Av. Corrientes 3954, esquina Medrano.
+        </h2>
+        <p class="mapa__p reveal">
+          A 50 metros del subte Medrano (línea B), entre las paradas de los colectivos 24, 26, 99, 124 y 168.
+        </p>
+      </header>
+
+      <div class="mapa__embed reveal">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3284.2!2d-58.421!3d-34.604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccaf7b7b7b7b7%3A0x0!2sAv.+Corrientes+3954%2C+Buenos+Aires%2C+Argentina!5e0!3m2!1ses!2sar!4v0"
+          width="100%"
+          height="500"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Ubicación de Pin Pun en Av. Corrientes 3954, Almagro"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+  <Marquee />
+
+  {/* ── REDES Y CONTACTO RÁPIDO ──────────────────────────────────── */}
+  <section class="section redes theme-dark">
+    <div class="container redes__grid">
+      <div class="redes__copy">
+        <p class="eyebrow reveal">Seguinos</p>
+        <h2 class="redes__t" data-split>
+          Las novedades pasan por Instagram.
+        </h2>
+        <p class="redes__p reveal">
+          Lanzamientos, eventos, vermut hour y fotos del salón. Mandanos un mensaje si querés consultar algo, contestamos siempre.
+        </p>
+      </div>
+
+      <div class="redes__lista">
+        <a href={negocio.redes.instagram} target="_blank" rel="noopener noreferrer" class="red reveal" data-cursor>
+          <span class="red__label">Instagram</span>
+          <span class="red__handle">{negocio.redes.instagramHandle}</span>
+          <span class="red__arrow">→</span>
+        </a>
+
+        <a href={`tel:${negocio.ubicaciones[0].telefonos[0].replace(/\s/g, '')}`} class="red reveal" data-cursor>
+          <span class="red__label">Teléfono Almagro</span>
+          <span class="red__handle">{negocio.ubicaciones[0].telefonos[0]}</span>
+          <span class="red__arrow">→</span>
+        </a>
+
+        <a href="mailto:hola@pinpun.com.ar" class="red reveal" data-cursor>
+          <span class="red__label">Email</span>
+          <span class="red__handle">hola@pinpun.com.ar</span>
+          <span class="red__arrow">→</span>
+        </a>
+
+        <a href="https://wa.me/541148623260" target="_blank" rel="noopener noreferrer" class="red reveal" data-cursor>
+          <span class="red__label">WhatsApp</span>
+          <span class="red__handle">+54 11 4862-3260</span>
+          <span class="red__arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* ── FAQ ──────────────────────────────────────────────────────── */}
+  <section class="section faq">
+    <div class="container">
+      <header class="faq__head">
+        <p class="eyebrow reveal">Preguntas frecuentes</p>
+        <h2 class="faq__t" data-split>
+          Lo que más nos preguntan.
+        </h2>
+      </header>
+
+      <ul class="faq__lista">
+        {faq.map((item) => (
+          <li class="faq__item reveal">
+            <details>
+              <summary>
+                <span class="faq__pregunta">{item.pregunta}</span>
+                <span class="faq__icono" aria-hidden="true">+</span>
+              </summary>
+              <p class="faq__respuesta">{item.respuesta}</p>
+            </details>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  /* ── PORTADA ─────────────────────────────────────────────────────── */
+  .cont-hero { padding: 9rem 0 var(--space-xl); }
+  .cont-hero__inner { max-width: 65ch; }
+  .cont-hero__title {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-block: 1.4rem;
+  }
+  .cont-hero__sub {
+    font-size: var(--fs-md);
+    color: var(--color-text-soft);
+    line-height: 1.6;
+    max-width: 55ch;
+  }
+
+  /* ── LOCALES ────────────────────────────────────────────────────── */
+  .locales__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .locales__grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  }
+
+  .local {
+    background-color: var(--color-crema-soft);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: transform var(--t-med) var(--ease-out),
+                box-shadow var(--t-med) var(--ease-out);
+  }
+
+  .local:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 30px 60px -25px rgba(10, 9, 8, 0.2);
+  }
+
+  .local__num {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-style: italic;
+    color: var(--color-tomate);
+    line-height: 1;
+  }
+
+  .local__nombre {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1;
+    margin-block: 0.5rem 0.8rem;
+  }
+
+  .local__direccion {
+    font-size: var(--fs-md);
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .local__ciudad {
+    font-size: var(--fs-base);
+    color: var(--color-text-soft);
+  }
+
+  .local__bloque {
+    margin-top: 1.4rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .local__label {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-tomate);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .local__valor {
+    font-size: var(--fs-base);
+    color: var(--color-text);
+  }
+
+  .local__tel {
+    display: block;
+    transition: color var(--t-fast) var(--ease-out);
+  }
+
+  .local__tel:hover { color: var(--color-tomate); }
+
+  .local__cta {
+    margin-top: 1.8rem;
+    align-self: flex-start;
+  }
+
+  /* ── MAPA ───────────────────────────────────────────────────────── */
+  .mapa__head { margin-bottom: var(--space-xl); max-width: 60ch; }
+
+  .mapa__t {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    margin-top: 1rem;
+  }
+
+  .mapa__p {
+    font-size: var(--fs-md);
+    color: var(--color-text-soft);
+    margin-top: 1rem;
+    max-width: 55ch;
+  }
+
+  .mapa__embed {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 16 / 8;
+  }
+
+  .mapa__embed iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    filter: grayscale(0.2);
+  }
+
+  /* ── REDES ──────────────────────────────────────────────────────── */
+  .redes {
+    background-color: var(--color-carbon);
+    color: var(--color-crema);
+  }
+
+  .redes__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 1024px) {
+    .redes__grid { grid-template-columns: 1fr 1.2fr; gap: var(--space-2xl); }
+  }
+
+  .redes__t {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-crema);
+    line-height: 1.05;
+    margin-block: 1rem 1.4rem;
+  }
+
+  .redes__p {
+    color: rgba(245, 239, 230, 0.75);
+    font-size: var(--fs-md);
+    line-height: 1.7;
+    max-width: 50ch;
+  }
+
+  .redes__lista {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid rgba(245, 239, 230, 0.15);
+  }
+
+  .red {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding-block: 1.6rem;
+    border-bottom: 1px solid rgba(245, 239, 230, 0.15);
+    transition: padding-left var(--t-fast) var(--ease-out);
+  }
+
+  .red:hover {
+    padding-left: 1rem;
+  }
+
+  .red__label {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-dorado);
+    min-width: 9rem;
+  }
+
+  .red__handle {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--color-crema);
+  }
+
+  .red__arrow {
+    font-size: 1.4rem;
+    color: var(--color-dorado);
+    transition: transform var(--t-fast) var(--ease-out);
+  }
+
+  .red:hover .red__arrow {
+    transform: translateX(8px);
+  }
+
+  /* ── FAQ ────────────────────────────────────────────────────────── */
+  .faq__head { margin-bottom: var(--space-xl); max-width: 50ch; }
+
+  .faq__t {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    margin-top: 1rem;
+  }
+
+  .faq__lista {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .faq__item {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .faq__item details summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-block: 1.6rem;
+    cursor: pointer;
+    list-style: none;
+    transition: color var(--t-fast) var(--ease-out);
+  }
+
+  .faq__item details summary::-webkit-details-marker { display: none; }
+
+  .faq__item details summary:hover { color: var(--color-tomate); }
+
+  .faq__pregunta {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .faq__icono {
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--color-tomate);
+    transition: transform var(--t-fast) var(--ease-out);
+  }
+
+  .faq__item details[open] .faq__icono {
+    transform: rotate(45deg);
+  }
+
+  .faq__respuesta {
+    padding-bottom: 1.8rem;
+    color: var(--color-text-soft);
+    font-size: var(--fs-base);
+    line-height: 1.7;
+    max-width: 70ch;
+  }
+</style>

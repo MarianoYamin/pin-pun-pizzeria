@@ -1,0 +1,194 @@
+---
+/**
+ * @archivo    Footer.astro
+ * @modulo     Footer global
+ * @descripcion Cierre del sitio: locales, contacto, redes, créditos.
+ * @version    1.0.0
+ */
+
+import { negocio } from '../data/contenido';
+---
+
+<footer class="footer">
+  <div class="footer__hero container">
+    <p class="eyebrow">Pin Pun · 1927</p>
+    <h2 class="footer__claim display reveal">
+      Una porción <em>de historia,</em><br/>
+      a la vuelta de tu casa.
+    </h2>
+  </div>
+
+  <div class="footer__grid container">
+    {negocio.ubicaciones.map((local) => (
+      <div class="footer__col">
+        <p class="footer__small">Local</p>
+        <h3 class="footer__local">{local.nombre}</h3>
+        <p class="footer__line">{local.direccion}</p>
+        <p class="footer__line">{local.ciudad}</p>
+        <p class="footer__line"><strong>{local.horarios}</strong></p>
+        {local.telefonos.map((tel) => (
+          <p class="footer__line"><a href={`tel:${tel.replace(/\s/g, '')}`}>{tel}</a></p>
+        ))}
+        <a href={local.mapsUrl} target="_blank" rel="noopener noreferrer" class="footer__maps">
+          Ver en Google Maps →
+        </a>
+      </div>
+    ))}
+
+    <div class="footer__col">
+      <p class="footer__small">Seguinos</p>
+      <a href={negocio.redes.instagram} target="_blank" rel="noopener noreferrer" class="footer__social">
+        Instagram <span class="footer__handle">{negocio.redes.instagramHandle}</span>
+      </a>
+      <p class="footer__small footer__small--top">Navegá</p>
+      <ul class="footer__links">
+        <li><a href="/carta">Carta</a></li>
+        <li><a href="/experiencia">Experiencia</a></li>
+        <li><a href="/historia">Historia</a></li>
+        <li><a href="/galeria">Galería</a></li>
+        <li><a href="/contacto">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer__bottom container">
+    <p>© {new Date().getFullYear()} Pin Pun · Todos los derechos reservados</p>
+    <p class="footer__credit">
+      Sitio diseñado con tradición porteña ·
+      <span class="footer__attrib">Imágenes referenciales vía Unsplash</span>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: var(--color-carbon);
+    color: var(--color-crema);
+    padding-block: var(--space-2xl) var(--space-lg);
+    margin-top: var(--space-3xl);
+  }
+
+  .footer__hero {
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid rgba(245, 239, 230, 0.12);
+  }
+
+  .footer__claim {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-crema);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-top: 1.5rem;
+    max-width: 22ch;
+  }
+
+  .footer__claim em {
+    font-style: italic;
+    color: var(--color-dorado);
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    padding-block: var(--space-xl);
+  }
+
+  @media (min-width: 768px) {
+    .footer__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .footer__small {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-dorado);
+    margin-bottom: 0.75rem;
+  }
+
+  .footer__small--top { margin-top: 2rem; }
+
+  .footer__local {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-style: italic;
+    color: var(--color-crema);
+    margin-bottom: 0.75rem;
+  }
+
+  .footer__line {
+    color: rgba(245, 239, 230, 0.75);
+    font-size: var(--fs-sm);
+    line-height: 1.7;
+  }
+
+  .footer__line a:hover { color: var(--color-dorado); }
+
+  .footer__maps {
+    display: inline-block;
+    margin-top: 0.8rem;
+    color: var(--color-tomate);
+    font-size: var(--fs-sm);
+    transition: color var(--t-fast) var(--ease-out);
+  }
+
+  .footer__maps:hover { color: var(--color-dorado); }
+
+  .footer__social {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--color-crema);
+    transition: color var(--t-fast) var(--ease-out);
+  }
+
+  .footer__social:hover { color: var(--color-dorado); }
+
+  .footer__handle {
+    font-family: var(--font-body);
+    font-style: normal;
+    font-size: var(--fs-sm);
+    color: var(--color-dorado);
+    letter-spacing: 0.05em;
+  }
+
+  .footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+  }
+
+  .footer__links a {
+    font-size: var(--fs-sm);
+    color: rgba(245, 239, 230, 0.75);
+    transition: color var(--t-fast) var(--ease-out);
+  }
+
+  .footer__links a:hover { color: var(--color-crema); }
+
+  .footer__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: var(--space-lg);
+    border-top: 1px solid rgba(245, 239, 230, 0.12);
+    font-size: var(--fs-xs);
+    color: rgba(245, 239, 230, 0.5);
+    letter-spacing: 0.04em;
+  }
+
+  @media (min-width: 768px) {
+    .footer__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .footer__attrib { color: rgba(245, 239, 230, 0.4); }
+</style>

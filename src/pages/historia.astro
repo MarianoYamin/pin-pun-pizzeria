@@ -1,0 +1,460 @@
+---
+/**
+ * @archivo    historia.astro
+ * @modulo     Página Historia
+ * @descripcion Narrativa centenaria de Pin Pun: origen, manifiesto en cuatro
+ *              pilares, línea de tiempo con seis hitos.
+ * @version    1.0.0
+ */
+
+import Layout from '../layouts/Layout.astro';
+import Marquee from '../components/Marquee.astro';
+import { manifiesto, hitos } from '../data/contenido';
+import { vintage, ambiente } from '../data/imagenes';
+---
+
+<Layout
+  titulo="Historia · Pin Pun · 1927"
+  descripcion="Pin Pun fue fundada en 1927 por inmigrantes italianos en Av. Corrientes 3954, Almagro. Casi un siglo de pizza al molde, con Carlos Gardel entre los habitués."
+  tema="oscuro"
+>
+
+  {/* ── PORTADA ──────────────────────────────────────────────────── */}
+  <section class="hist-hero theme-dark">
+    <div class="hist-hero__bg" data-parallax="0.2">
+      <img src={vintage.blancoNegro1} alt="Atmósfera vintage de pizzería porteña" />
+      <div class="hist-hero__bg-overlay"></div>
+    </div>
+
+    <div class="container hist-hero__inner">
+      <p class="hist-hero__year">1927 — Hoy</p>
+      <h1 class="hist-hero__title" data-split>
+        Casi cien años amasando la misma masa.
+      </h1>
+      <p class="hist-hero__sub reveal">
+        Pin Pun nació en una esquina de Almagro de la mano de inmigrantes italianos que poco después abrirían Güerrín. La historia que sigue —los carteles, los azulejos, Gardel, el premio del 2015— pasó toda en este mismo salón.
+      </p>
+    </div>
+  </section>
+
+  {/* ── ORIGEN ───────────────────────────────────────────────────── */}
+  <section class="section origen">
+    <div class="container origen__grid">
+      <div class="origen__copy">
+        <p class="eyebrow reveal">Origen</p>
+        <h2 class="origen__t" data-split>
+          Una esquina de Corrientes, una receta de Italia.
+        </h2>
+        <p class="origen__p reveal">
+          Cuando Pin Pun abrió sus puertas en 1927, Av. Corrientes todavía era angosta y Almagro respiraba tango. Los fundadores —italianos que cinco años más tarde fundarían Güerrín en pleno centro— eligieron este barrio porque tenía algo que el centro no: vida cotidiana, vecinos, pizzerías al molde que servían al paso.
+        </p>
+        <p class="origen__p reveal">
+          La masa que hoy sale del horno es la misma que servían entonces: harina común, fermentación lenta, mozzarella entera, salsa San Marzano. Las recetas no se cambiaron porque no había necesidad.
+        </p>
+      </div>
+
+      <div class="origen__media" data-clip>
+        <img src={vintage.blancoNegro2} alt="Foto histórica de pizzería porteña" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <Marquee variante="oscuro" frases={['1927', '1934 Gardel', '1950 Edad dorada', '2015 Muza 5K', '2020 Villa Urquiza', 'Hoy']} />
+
+  {/* ── LÍNEA DE TIEMPO ──────────────────────────────────────────── */}
+  <section class="section timeline theme-dark">
+    <div class="container">
+      <header class="timeline__head">
+        <p class="eyebrow reveal">Línea de tiempo</p>
+        <h2 class="timeline__t" data-split>
+          Seis momentos que cuentan los cien años.
+        </h2>
+      </header>
+
+      <ol class="timeline__lista">
+        {hitos.map((hito) => (
+          <li class="hito reveal">
+            <span class="hito__anio">{hito.anio}</span>
+            <div class="hito__contenido">
+              <h3 class="hito__t">{hito.titulo}</h3>
+              <p class="hito__p">{hito.texto}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* ── MANIFIESTO ───────────────────────────────────────────────── */}
+  <section class="section manifiesto">
+    <div class="container">
+      <header class="manifiesto__head">
+        <p class="eyebrow reveal">Manifiesto</p>
+        <h2 class="manifiesto__t" data-split>
+          Cuatro reglas que sostuvieron Pin Pun casi un siglo.
+        </h2>
+      </header>
+
+      <ul class="manifiesto__lista">
+        {manifiesto.map((m) => (
+          <li class="manifiesto__item reveal">
+            <span class="manifiesto__num">{m.numero}</span>
+            <h3 class="manifiesto__item-t">{m.titulo}</h3>
+            <p class="manifiesto__item-p">{m.texto}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ── ANÉCDOTA GARDEL ──────────────────────────────────────────── */}
+  <section class="section gardel">
+    <div class="container gardel__grid">
+      <div class="gardel__media" data-clip>
+        <img src={vintage.blancoNegro3} alt="Buenos Aires vintage" loading="lazy" />
+      </div>
+
+      <div class="gardel__copy">
+        <span class="gardel__pre">Anécdota</span>
+        <h2 class="gardel__t" data-split>
+          Gardel paraba camino al teatro.
+        </h2>
+        <p class="gardel__p reveal">
+          La leyenda de Almagro cuenta que Carlos Gardel, vecino de unas cuadras, paraba en el mostrador de Pin Pun antes de cruzar al teatro a cantar. Pedía siempre lo mismo: una porción de Especial —jamón cocido, morrones asados y mozzarella— y un vermut con sifón.
+        </p>
+        <p class="gardel__p reveal">
+          La carta no cambió. Si pasás hoy y pedís la Especial, vas a estar comiendo exactamente lo mismo que el zorzal en 1934.
+        </p>
+        <p class="gardel__quote script reveal">
+          “Tomá uno por mí.”
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ── CIERRE ───────────────────────────────────────────────────── */}
+  <section class="section cierre theme-dark">
+    <div class="container cierre__inner">
+      <h2 class="cierre__t" data-split>
+        Cien años en cuenta regresiva.
+      </h2>
+      <p class="cierre__p reveal">
+        En 2027 cumplimos un siglo. Mismo horno, misma masa, misma esquina. Te esperamos para festejarlo.
+      </p>
+      <a href="/contacto" class="btn btn--primary" data-magnetic>Visitanos</a>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  /* ── PORTADA ─────────────────────────────────────────────────────── */
+  .hist-hero {
+    position: relative;
+    min-height: 90svh;
+    display: flex;
+    align-items: flex-end;
+    padding: 9rem 0 var(--space-2xl);
+    overflow: hidden;
+    color: var(--color-crema);
+    background-color: var(--color-carbon);
+  }
+
+  .hist-hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hist-hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.7) sepia(0.2) brightness(0.7);
+  }
+
+  .hist-hero__bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10,9,8,0.4), rgba(10,9,8,0.95));
+  }
+
+  .hist-hero__inner { position: relative; z-index: 1; }
+
+  .hist-hero__year {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--color-dorado);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hist-hero__title {
+    font-size: var(--fs-3xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--color-crema);
+    max-width: 18ch;
+    margin-bottom: 2rem;
+  }
+
+  .hist-hero__sub {
+    font-size: var(--fs-md);
+    color: rgba(245, 239, 230, 0.75);
+    line-height: 1.6;
+    max-width: 55ch;
+    font-weight: 300;
+  }
+
+  /* ── ORIGEN ─────────────────────────────────────────────────────── */
+  .origen__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .origen__grid { grid-template-columns: 1.1fr 1fr; gap: var(--space-2xl); }
+  }
+
+  .origen__t {
+    font-size: var(--fs-xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    margin-block: 1rem 1.6rem;
+  }
+
+  .origen__p {
+    font-size: var(--fs-md);
+    color: var(--color-text-soft);
+    line-height: 1.7;
+    font-weight: 300;
+    max-width: 50ch;
+  }
+
+  .origen__p + .origen__p { margin-top: 1.2rem; }
+
+  .origen__media {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .origen__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.5) sepia(0.1);
+  }
+
+  /* ── TIMELINE ───────────────────────────────────────────────────── */
+  .timeline {
+    background-color: var(--color-carbon);
+    color: var(--color-crema);
+  }
+
+  .timeline__head { margin-bottom: var(--space-xl); max-width: 50ch; }
+  .timeline__t {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--color-crema);
+    margin-top: 1rem;
+  }
+
+  .timeline__lista {
+    border-top: 1px solid rgba(245,239,230,0.15);
+  }
+
+  .hito {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding-block: 2rem;
+    border-bottom: 1px solid rgba(245,239,230,0.15);
+    transition: padding-left var(--t-med) var(--ease-out);
+  }
+
+  @media (min-width: 768px) {
+    .hito {
+      grid-template-columns: 12rem 1fr;
+      gap: 3rem;
+      align-items: baseline;
+    }
+  }
+
+  .hito:hover {
+    padding-left: 1.5rem;
+  }
+
+  .hito__anio {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-dorado);
+    line-height: 1;
+  }
+
+  .hito__t {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-crema);
+    margin-bottom: 0.6rem;
+  }
+
+  .hito__p {
+    color: rgba(245, 239, 230, 0.75);
+    font-size: var(--fs-base);
+    line-height: 1.7;
+    max-width: 60ch;
+    font-weight: 300;
+  }
+
+  /* ── MANIFIESTO ─────────────────────────────────────────────────── */
+  .manifiesto__head { margin-bottom: var(--space-xl); max-width: 50ch; }
+
+  .manifiesto__t {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    margin-top: 1rem;
+  }
+
+  .manifiesto__lista {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .manifiesto__lista { grid-template-columns: repeat(2, 1fr); gap: 3rem; }
+  }
+
+  .manifiesto__item {
+    padding: 2rem;
+    background-color: var(--color-crema-soft);
+    border-radius: var(--radius-lg);
+    transition: transform var(--t-med) var(--ease-out);
+  }
+
+  .manifiesto__item:hover {
+    transform: translateY(-4px);
+  }
+
+  .manifiesto__num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-tomate);
+    line-height: 1;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .manifiesto__item-t {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 0.8rem;
+  }
+
+  .manifiesto__item-p {
+    color: var(--color-text-soft);
+    font-size: var(--fs-base);
+    line-height: 1.65;
+  }
+
+  /* ── GARDEL ─────────────────────────────────────────────────────── */
+  .gardel__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .gardel__grid { grid-template-columns: 1fr 1.2fr; gap: var(--space-2xl); }
+  }
+
+  .gardel__media {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .gardel__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.7) sepia(0.2);
+  }
+
+  .gardel__pre {
+    font-family: var(--font-script);
+    font-size: 1.5rem;
+    color: var(--color-tomate);
+    font-style: italic;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .gardel__t {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    margin-bottom: 1.6rem;
+  }
+
+  .gardel__p {
+    font-size: var(--fs-md);
+    color: var(--color-text-soft);
+    line-height: 1.7;
+    font-weight: 300;
+    max-width: 55ch;
+    margin-bottom: 1.2rem;
+  }
+
+  .gardel__quote {
+    font-size: 2.2rem;
+    color: var(--color-tomate);
+    margin-top: 1.5rem;
+  }
+
+  /* ── CIERRE ─────────────────────────────────────────────────────── */
+  .cierre {
+    background-color: var(--color-carbon);
+    text-align: center;
+    color: var(--color-crema);
+  }
+
+  .cierre__inner { max-width: 50ch; margin-inline: auto; }
+
+  .cierre__t {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-crema);
+    margin-bottom: 1.5rem;
+  }
+
+  .cierre__p {
+    color: rgba(245, 239, 230, 0.75);
+    font-size: var(--fs-md);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+</style>

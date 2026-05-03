@@ -1,0 +1,66 @@
+---
+/**
+ * @archivo    SectionTitle.astro
+ * @modulo     Encabezado de sección
+ * @descripcion Bloque reutilizable de eyebrow + título grande + bajada.
+ *              Soporta animación de revelado por palabra (data-split).
+ * @version    1.0.0
+ */
+
+interface Props {
+  eyebrow?: string;
+  titulo: string;
+  bajada?: string;
+  alineacion?: 'izq' | 'centro';
+  /** Si true, anima el título letra por letra al entrar en viewport */
+  animarTitulo?: boolean;
+}
+
+const {
+  eyebrow,
+  titulo,
+  bajada,
+  alineacion = 'izq',
+  animarTitulo = true,
+} = Astro.props;
+---
+
+<header class:list={['section-title', `section-title--${alineacion}`]}>
+  {eyebrow && <p class="eyebrow reveal">{eyebrow}</p>}
+  <h2 class="section-title__h" {...(animarTitulo ? { 'data-split': '' } : {})}>
+    {titulo}
+  </h2>
+  {bajada && <p class="section-title__bajada reveal">{bajada}</p>}
+</header>
+
+<style>
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-bottom: var(--space-xl);
+    max-width: 70ch;
+  }
+
+  .section-title--centro {
+    align-items: center;
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .section-title__h {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .section-title__bajada {
+    font-size: var(--fs-md);
+    color: var(--color-text-soft);
+    line-height: 1.6;
+    max-width: 60ch;
+    font-weight: 300;
+  }
+</style>

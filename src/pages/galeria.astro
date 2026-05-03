@@ -1,0 +1,236 @@
+---
+/**
+ * @archivo    galeria.astro
+ * @modulo     Página Galería
+ * @descripcion Grid masonry con todas las fotos del set, separadas por
+ *              filtro Producto / Local. Hover con zoom suave.
+ * @version    1.0.0
+ */
+
+import Layout from '../layouts/Layout.astro';
+import Marquee from '../components/Marquee.astro';
+import { galeria } from '../data/imagenes';
+---
+
+<Layout
+  titulo="Galería · Pin Pun"
+  descripcion="Imágenes de la cocina, el salón, la barra y los platos de Pin Pun, pizzería desde 1927 en Almagro."
+>
+
+  {/* ── PORTADA ──────────────────────────────────────────────────── */}
+  <section class="gal-hero">
+    <div class="container gal-hero__inner">
+      <p class="eyebrow reveal">Galería</p>
+      <h1 class="gal-hero__title" data-split>
+        El salón, los platos, la cocina.
+      </h1>
+      <p class="gal-hero__sub reveal">
+        Fotografías que cuentan lo que el texto no alcanza: los azulejos que se mantienen iguales desde los años 50, la mozzarella derretida sobre la masa al molde, la barra que se llena al caer el sol.
+      </p>
+
+      <div class="gal-hero__filtros reveal">
+        <button class="gal-hero__chip is-active" data-filtro="todos" data-cursor>Todos</button>
+        <button class="gal-hero__chip" data-filtro="producto" data-cursor>Productos</button>
+        <button class="gal-hero__chip" data-filtro="local" data-cursor>El local</button>
+      </div>
+    </div>
+  </section>
+
+  {/* ── GRID ─────────────────────────────────────────────────────── */}
+  <section class="section gal-grid">
+    <div class="container">
+      <div class="masonry">
+        {galeria.map((g, idx) => (
+          <figure
+            class:list={['masonry__cell', `masonry__cell--${idx % 5}`]}
+            data-tipo={g.tipo}
+            data-clip
+          >
+            <img src={g.src} alt={g.alt} loading="lazy" decoding="async" />
+            <figcaption class="masonry__caption">{g.alt}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Marquee variante="oscuro" />
+
+  {/* ── INSTAGRAM CTA ────────────────────────────────────────────── */}
+  <section class="section gal-cta">
+    <div class="container gal-cta__inner">
+      <p class="eyebrow reveal">Más fotos</p>
+      <h2 class="gal-cta__t" data-split>
+        Seguinos en Instagram para ver el día a día.
+      </h2>
+      <p class="gal-cta__p reveal">@pinpuncorrientes · pizzas, mostrador, cocina y momentos del salón.</p>
+      <a href="https://www.instagram.com/pinpuncorrientes/" target="_blank" rel="noopener noreferrer" class="btn btn--primary" data-magnetic>
+        Ir a Instagram →
+      </a>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  /* ── PORTADA ─────────────────────────────────────────────────────── */
+  .gal-hero {
+    padding: 9rem 0 var(--space-xl);
+  }
+
+  .gal-hero__inner { max-width: 65ch; }
+
+  .gal-hero__title {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-block: 1.4rem;
+  }
+
+  .gal-hero__sub {
+    font-size: var(--fs-md);
+    color: var(--color-text-soft);
+    line-height: 1.6;
+    max-width: 55ch;
+    margin-bottom: 2rem;
+  }
+
+  .gal-hero__filtros {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .gal-hero__chip {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    font-size: var(--fs-sm);
+    color: var(--color-text-soft);
+    transition: all var(--t-fast) var(--ease-out);
+    cursor: pointer;
+  }
+
+  .gal-hero__chip:hover,
+  .gal-hero__chip.is-active {
+    background-color: var(--color-tomate);
+    color: var(--color-crema);
+    border-color: var(--color-tomate);
+  }
+
+  /* ── MASONRY ────────────────────────────────────────────────────── */
+  .masonry {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    grid-auto-flow: dense;
+  }
+
+  @media (min-width: 768px) {
+    .masonry { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  }
+
+  @media (min-width: 1200px) {
+    .masonry { grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+  }
+
+  .masonry__cell {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    aspect-ratio: 1;
+    cursor: zoom-in;
+    transition: opacity var(--t-med) var(--ease-out),
+                transform var(--t-med) var(--ease-out);
+  }
+
+  /* Variantes para romper la grilla y crear ritmo masonry */
+  .masonry__cell--0 { aspect-ratio: 4 / 5; }
+  .masonry__cell--2 { aspect-ratio: 5 / 4; }
+  .masonry__cell--3 { aspect-ratio: 4 / 5; grid-row: span 2; }
+  .masonry__cell--4 { aspect-ratio: 1; }
+
+  @media (min-width: 768px) {
+    .masonry__cell--3 { aspect-ratio: 1 / 1.6; }
+  }
+
+  .masonry__cell.is-hidden {
+    opacity: 0.15;
+    pointer-events: none;
+    filter: grayscale(1);
+  }
+
+  .masonry__cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease-out);
+  }
+
+  .masonry__cell:hover img {
+    transform: scale(1.08);
+  }
+
+  .masonry__caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 1.5rem 1.2rem 1.2rem;
+    background: linear-gradient(180deg, transparent, rgba(10,9,8,0.85));
+    color: var(--color-crema);
+    font-size: var(--fs-xs);
+    line-height: 1.4;
+    transform: translateY(100%);
+    transition: transform var(--t-med) var(--ease-out);
+  }
+
+  .masonry__cell:hover .masonry__caption {
+    transform: translateY(0);
+  }
+
+  /* ── CTA ────────────────────────────────────────────────────────── */
+  .gal-cta {
+    text-align: center;
+    background-color: var(--color-crema-soft);
+  }
+
+  .gal-cta__inner { max-width: 50ch; margin-inline: auto; }
+
+  .gal-cta__t {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    margin-block: 1rem 1.2rem;
+  }
+
+  .gal-cta__p {
+    font-size: var(--fs-md);
+    color: var(--color-text-soft);
+    margin-bottom: 2rem;
+  }
+</style>
+
+<script>
+  // Filtro de galería: muestra/oculta cells según tipo
+  const chips = document.querySelectorAll<HTMLButtonElement>('[data-filtro]');
+  const cells = document.querySelectorAll<HTMLElement>('.masonry__cell');
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const filtro = chip.dataset.filtro;
+      chips.forEach((c) => c.classList.remove('is-active'));
+      chip.classList.add('is-active');
+
+      cells.forEach((cell) => {
+        const tipo = cell.dataset.tipo;
+        if (filtro === 'todos' || tipo === filtro) {
+          cell.classList.remove('is-hidden');
+        } else {
+          cell.classList.add('is-hidden');
+        }
+      });
+    });
+  });
+</script>

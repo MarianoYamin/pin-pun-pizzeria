@@ -1,0 +1,306 @@
+---
+/**
+ * @archivo    Header.astro
+ * @modulo     Navegación principal
+ * @descripcion Header sticky con logo, links a las 7 páginas y CTA.
+ *              En mobile colapsa a menú hamburguesa fullscreen.
+ * @version    1.0.0
+ */
+
+interface Props {
+  tema?: 'claro' | 'oscuro';
+}
+const { tema = 'claro' } = Astro.props;
+
+const links = [
+  { href: '/', label: 'Inicio' },
+  { href: '/carta', label: 'Carta' },
+  { href: '/experiencia', label: 'Experiencia' },
+  { href: '/historia', label: 'Historia' },
+  { href: '/resenas', label: 'Reseñas' },
+  { href: '/galeria', label: 'Galería' },
+  { href: '/contacto', label: 'Contacto' },
+];
+
+const ruta = Astro.url.pathname;
+---
+
+<header class:list={['header', tema === 'oscuro' && 'header--dark']} data-header>
+  <div class="header__inner container">
+    <a href="/" class="header__logo" aria-label="Pin Pun · Inicio">
+      <span class="header__logo-name">Pin·Pun</span>
+      <span class="header__logo-year">desde 1927</span>
+    </a>
+
+    <nav class="header__nav" aria-label="Navegación principal">
+      <ul class="header__list">
+        {links.map((link) => {
+          const activo = ruta === link.href || (link.href !== '/' && ruta.startsWith(link.href));
+          return (
+            <li>
+              <a
+                href={link.href}
+                class:list={['header__link', activo && 'is-active']}
+                data-cursor
+              >
+                {link.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+
+    <a href="/contacto" class="header__cta btn btn--primary" data-magnetic>
+      Visitanos
+    </a>
+
+    <button class="header__burger" aria-label="Abrir menú" data-burger>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Menú mobile fullscreen -->
+  <div class="header__mobile" data-mobile-menu aria-hidden="true">
+    <ul class="header__mobile-list">
+      {links.map((link) => (
+        <li><a href={link.href} class="header__mobile-link">{link.label}</a></li>
+      ))}
+    </ul>
+    <div class="header__mobile-foot">
+      <p class="script">Av. Corrientes 3954 · Almagro</p>
+      <p>11 4862-3260</p>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background-color: rgba(245, 239, 230, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-line);
+    transition: background-color var(--t-fast) var(--ease-out);
+  }
+
+  .header--dark {
+    background-color: rgba(10, 9, 8, 0.85);
+    border-bottom-color: rgba(245, 239, 230, 0.1);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-block: 1rem;
+  }
+
+  /* Logo */
+  .header__logo {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 0.15rem;
+  }
+
+  .header__logo-name {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .header--dark .header__logo-name { color: var(--color-crema); }
+
+  .header__logo-year {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-tomate);
+  }
+
+  /* Nav */
+  .header__nav {
+    display: none;
+  }
+
+  .header__list {
+    display: flex;
+    gap: 2.2rem;
+  }
+
+  .header__link {
+    position: relative;
+    font-size: var(--fs-sm);
+    font-weight: 400;
+    color: var(--color-text-soft);
+    transition: color var(--t-fast) var(--ease-out);
+  }
+
+  .header__link::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--color-tomate);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--t-med) var(--ease-out);
+  }
+
+  .header__link:hover::after,
+  .header__link.is-active::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .header__link:hover,
+  .header__link.is-active {
+    color: var(--color-text);
+  }
+
+  .header--dark .header__link {
+    color: rgba(245, 239, 230, 0.65);
+  }
+
+  .header--dark .header__link:hover,
+  .header--dark .header__link.is-active {
+    color: var(--color-crema);
+  }
+
+  /* CTA */
+  .header__cta {
+    display: none;
+  }
+
+  /* Burger mobile */
+  .header__burger {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .header__burger span {
+    display: block;
+    width: 24px;
+    height: 1.5px;
+    background-color: var(--color-text);
+    transition: transform var(--t-fast) var(--ease-out),
+                opacity var(--t-fast) var(--ease-out);
+  }
+
+  .header--dark .header__burger span { background-color: var(--color-crema); }
+
+  .header__burger.is-open span:nth-child(1) {
+    transform: translateY(4px) rotate(45deg);
+  }
+  .header__burger.is-open span:nth-child(2) {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+
+  /* Mobile menu */
+  .header__mobile {
+    position: fixed;
+    inset: 0;
+    background-color: var(--color-carbon);
+    color: var(--color-crema);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 6rem var(--gutter) var(--space-xl);
+    transform: translateY(-100%);
+    transition: transform var(--t-med) var(--ease-in-out);
+    z-index: -1;
+  }
+
+  .header__mobile.is-open {
+    transform: translateY(0);
+  }
+
+  .header__mobile-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .header__mobile-link {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 10vw, 4rem);
+    font-style: italic;
+    color: var(--color-crema);
+    line-height: 1;
+  }
+
+  .header__mobile-foot {
+    color: var(--color-dorado);
+    font-size: var(--fs-sm);
+    line-height: 1.8;
+  }
+
+  .header__mobile-foot .script {
+    font-size: 1.4rem;
+    color: var(--color-crema);
+  }
+
+  /* Desktop: mostrar nav y CTA, ocultar burger */
+  @media (min-width: 1024px) {
+    .header__nav { display: block; }
+    .header__cta { display: inline-flex; }
+    .header__burger { display: none; }
+  }
+</style>
+
+<script>
+  // Toggle del menú mobile
+  const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
+  const mobile = document.querySelector<HTMLElement>('[data-mobile-menu]');
+
+  burger?.addEventListener('click', () => {
+    const abierto = mobile?.classList.toggle('is-open');
+    burger.classList.toggle('is-open');
+    mobile?.setAttribute('aria-hidden', abierto ? 'false' : 'true');
+    document.body.style.overflow = abierto ? 'hidden' : '';
+  });
+
+  // Cerrar al clickear un link
+  mobile?.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      mobile.classList.remove('is-open');
+      burger?.classList.remove('is-open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Header con fondo más sólido al hacer scroll
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  if (header) {
+    let ultimoScroll = 0;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      // ocultar al bajar, mostrar al subir
+      if (y > 100 && y > ultimoScroll) {
+        header.style.transform = 'translateY(-100%)';
+      } else {
+        header.style.transform = 'translateY(0)';
+      }
+      ultimoScroll = y;
+    });
+    header.style.transition = 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease';
+  }
+</script>

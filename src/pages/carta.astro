@@ -1,0 +1,357 @@
+---
+/**
+ * @archivo    carta.astro
+ * @modulo     Página Carta
+ * @descripcion Menú completo organizado en 5 categorías. Listado tipográfico
+ *              estilo carta de restaurante (sin imágenes en los ítems para
+ *              mantener foco editorial).
+ * @version    1.0.0
+ */
+
+import Layout from '../layouts/Layout.astro';
+import Marquee from '../components/Marquee.astro';
+import { carta, formatearPrecio } from '../data/menu';
+import { ambiente, pizzas } from '../data/imagenes';
+---
+
+<Layout
+  titulo="Carta · Pin Pun Pizzería"
+  descripcion="Pizzas al molde, empanadas fritas, faina, postres y bebidas. La carta completa de Pin Pun, pizzería desde 1927 en Almagro."
+>
+
+  {/* ── PORTADA ──────────────────────────────────────────────────── */}
+  <section class="carta-hero">
+    <div class="container carta-hero__inner">
+      <p class="eyebrow reveal">La carta</p>
+      <h1 class="carta-hero__title" data-split>
+        Cocina porteña, masa al molde y empanadas fritas.
+      </h1>
+      <p class="carta-hero__sub reveal">
+        Una propuesta breve, honesta, sin atajos. <em>No cobramos cubierto</em> y todas las pizzas se sirven en moldes redondos individuales o grandes.
+      </p>
+
+      <nav class="carta-hero__index reveal" aria-label="Índice de la carta">
+        {carta.map((cat) => (
+          <a href={`#${cat.id}`} class="carta-hero__chip" data-cursor>
+            {cat.titulo}
+          </a>
+        ))}
+      </nav>
+    </div>
+
+    <div class="carta-hero__media" data-clip>
+      <img src={pizzas.detalle} alt="Detalle de pizza al molde con mozzarella" loading="eager" />
+    </div>
+  </section>
+
+  <Marquee frases={['Masa fermentada 24 horas', 'Mozzarella entera', 'Horno de piedra', 'Sin cubierto', 'Por porción o entera']} />
+
+  {/* ── CATEGORÍAS ───────────────────────────────────────────────── */}
+  {carta.map((categoria, idx) => (
+    <section id={categoria.id} class="categoria section">
+      <div class="container">
+        <header class="categoria__head">
+          <span class="categoria__num">{String(idx + 1).padStart(2, '0')}</span>
+          <div>
+            <h2 class="categoria__titulo" data-split>{categoria.titulo}</h2>
+            <p class="categoria__bajada reveal">{categoria.subtitulo}</p>
+          </div>
+        </header>
+
+        <ul class="categoria__lista">
+          {categoria.items.map((item) => (
+            <li class="plato reveal" data-cursor>
+              <div class="plato__main">
+                <div class="plato__head">
+                  <h3 class="plato__nombre">{item.nombre}</h3>
+                  <span class="plato__dots" aria-hidden="true"></span>
+                  <span class="plato__precio">{formatearPrecio(item.precio)}</span>
+                </div>
+                {item.etiqueta && <span class="plato__etiqueta">{item.etiqueta}</span>}
+                <p class="plato__desc">{item.descripcion}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  {/* ── INFO ADICIONAL ───────────────────────────────────────────── */}
+  <section class="section info-extra">
+    <div class="container info-extra__grid">
+      <div class="info-extra__bloque reveal">
+        <h3 class="info-extra__t">Sobre la carta</h3>
+        <p>Tenemos treinta y un variedades de pizza —en esta carta listamos las diez más pedidas. Si querés alguna que no figura, preguntá: probablemente la hagamos.</p>
+      </div>
+      <div class="info-extra__bloque reveal">
+        <h3 class="info-extra__t">Para llevar</h3>
+        <p>Toda la carta se puede pedir para llevar o para comer al paso en el mostrador. Las pizzas se hornean al pedido, calculá entre 12 y 18 minutos en la mesa.</p>
+      </div>
+      <div class="info-extra__bloque reveal">
+        <h3 class="info-extra__t">Sin TACC y vegetarianos</h3>
+        <p>Tenemos opciones sin TACC y vegetarianas. Avisanos al pedir y te confirmamos qué variedades funcionan en cada caso.</p>
+      </div>
+    </div>
+  </section>
+
+  {/* ── CTA visita ───────────────────────────────────────────────── */}
+  <section class="section carta-cta">
+    <div class="container carta-cta__inner">
+      <p class="eyebrow reveal">¿Hambre?</p>
+      <h2 class="carta-cta__h" data-split>
+        Vení a probarla esta noche.
+      </h2>
+      <p class="carta-cta__p reveal">
+        Av. Corrientes 3954 · Almagro · 8:00 a 00:00
+      </p>
+      <a href="/contacto" class="btn btn--primary" data-magnetic>Cómo llegar</a>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  /* ── PORTADA ─────────────────────────────────────────────────────── */
+  .carta-hero {
+    position: relative;
+    min-height: 80svh;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: end;
+    padding-top: 9rem;
+    padding-bottom: var(--space-2xl);
+    overflow: hidden;
+  }
+
+  @media (min-width: 1024px) {
+    .carta-hero {
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+    }
+  }
+
+  .carta-hero__inner {
+    z-index: 1;
+    padding-bottom: var(--space-xl);
+  }
+
+  .carta-hero__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-block: 1.2rem 1.8rem;
+    max-width: 14ch;
+  }
+
+  .carta-hero__sub {
+    font-size: var(--fs-md);
+    color: var(--color-text-soft);
+    line-height: 1.6;
+    max-width: 50ch;
+    margin-bottom: 2rem;
+  }
+
+  .carta-hero__sub em {
+    color: var(--color-tomate);
+    font-style: italic;
+  }
+
+  .carta-hero__index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .carta-hero__chip {
+    padding: 0.5rem 1.1rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    font-size: var(--fs-sm);
+    color: var(--color-text-soft);
+    transition: all var(--t-fast) var(--ease-out);
+  }
+
+  .carta-hero__chip:hover {
+    background-color: var(--color-tomate);
+    color: var(--color-crema);
+    border-color: var(--color-tomate);
+    transform: translateY(-2px);
+  }
+
+  .carta-hero__media {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .carta-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ── CATEGORÍA ──────────────────────────────────────────────────── */
+  .categoria + .categoria {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .categoria__head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .categoria__num {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-tomate);
+    line-height: 1;
+  }
+
+  .categoria__titulo {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .categoria__bajada {
+    font-size: var(--fs-base);
+    color: var(--color-text-soft);
+    line-height: 1.5;
+    margin-top: 0.6rem;
+    max-width: 65ch;
+  }
+
+  .categoria__lista {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .categoria__lista { grid-template-columns: 1fr 1fr; column-gap: 4rem; }
+  }
+
+  /* ── PLATO ──────────────────────────────────────────────────────── */
+  .plato {
+    padding-block: 1.6rem;
+    border-bottom: 1px solid var(--color-line);
+    transition: background-color var(--t-fast) var(--ease-out);
+  }
+
+  .plato:hover {
+    background-color: rgba(199, 62, 29, 0.03);
+  }
+
+  .plato__head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .plato__nombre {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-text);
+    line-height: 1.1;
+    flex-shrink: 0;
+  }
+
+  .plato__dots {
+    flex: 1;
+    border-bottom: 1px dotted var(--color-text-mute);
+    transform: translateY(-4px);
+    min-width: 1rem;
+  }
+
+  .plato__precio {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--color-text);
+    flex-shrink: 0;
+  }
+
+  .plato__etiqueta {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-tomate);
+    font-weight: 500;
+  }
+
+  .plato__desc {
+    margin-top: 0.5rem;
+    font-size: var(--fs-sm);
+    color: var(--color-text-soft);
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+
+  /* ── INFO EXTRA ─────────────────────────────────────────────────── */
+  .info-extra {
+    background-color: var(--color-crema-soft);
+  }
+
+  .info-extra__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .info-extra__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .info-extra__t {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-style: italic;
+    margin-bottom: 0.8rem;
+    color: var(--color-tomate);
+  }
+
+  .info-extra__bloque p {
+    color: var(--color-text-soft);
+    line-height: 1.65;
+    font-size: var(--fs-base);
+  }
+
+  /* ── CTA ────────────────────────────────────────────────────────── */
+  .carta-cta {
+    background-color: var(--color-carbon);
+    color: var(--color-crema);
+    text-align: center;
+  }
+
+  .carta-cta__inner { max-width: 50ch; margin-inline: auto; }
+
+  .carta-cta__h {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-crema);
+    margin-block: 1rem 1.5rem;
+  }
+
+  .carta-cta__p {
+    color: var(--color-dorado);
+    margin-bottom: 2rem;
+    letter-spacing: 0.05em;
+  }
+</style>

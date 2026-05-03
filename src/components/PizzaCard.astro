@@ -1,0 +1,107 @@
+---
+/**
+ * @archivo    PizzaCard.astro
+ * @modulo     Card de plato
+ * @descripcion Tarjeta editorial de un ítem del menú: imagen, nombre,
+ *              descripción, precio y etiqueta. Hover con tilt sutil.
+ * @version    1.0.0
+ */
+
+import { formatearPrecio } from '../data/menu';
+import type { MenuItem } from '../data/menu';
+
+interface Props {
+  item: MenuItem;
+  imagen?: string;
+}
+
+const { item, imagen } = Astro.props;
+---
+
+<article class="pizza-card reveal" data-cursor>
+  {imagen && (
+    <div class="pizza-card__media" data-clip>
+      <img src={imagen} alt={item.nombre} loading="lazy" decoding="async" />
+    </div>
+  )}
+
+  <div class="pizza-card__body">
+    {item.etiqueta && <span class="pizza-card__tag">{item.etiqueta}</span>}
+    <h3 class="pizza-card__name">{item.nombre}</h3>
+    <p class="pizza-card__desc">{item.descripcion}</p>
+    <p class="pizza-card__price">{formatearPrecio(item.precio)}</p>
+  </div>
+</article>
+
+<style>
+  .pizza-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-crema-soft);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform var(--t-med) var(--ease-out),
+                box-shadow var(--t-med) var(--ease-out);
+  }
+
+  .pizza-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 60px -25px rgba(10, 9, 8, 0.25);
+  }
+
+  .pizza-card__media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .pizza-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease-out);
+  }
+
+  .pizza-card:hover .pizza-card__media img {
+    transform: scale(1.06);
+  }
+
+  .pizza-card__body {
+    padding: 1.6rem 1.6rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+  }
+
+  .pizza-card__tag {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-tomate);
+    font-weight: 500;
+  }
+
+  .pizza-card__name {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .pizza-card__desc {
+    color: var(--color-text-soft);
+    font-size: var(--fs-sm);
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .pizza-card__price {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-top: 0.4rem;
+  }
+</style>

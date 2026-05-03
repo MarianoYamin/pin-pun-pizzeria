@@ -1,0 +1,115 @@
+---
+/**
+ * @archivo    Layout.astro
+ * @modulo     Layout principal
+ * @descripcion Estructura HTML compartida por todas las páginas: head con
+ *              meta SEO, fuentes, loader, header, slot, footer y scripts.
+ * @version    1.0.0
+ */
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Loader from '../components/Loader.astro';
+import '../styles/global.css';
+
+interface Props {
+  titulo?: string;
+  descripcion?: string;
+  tema?: 'claro' | 'oscuro';
+  /** URL canónica de la página, opcional */
+  canonical?: string;
+  /** Imagen Open Graph */
+  ogImage?: string;
+}
+
+const {
+  titulo = 'Pin Pun · Pizzería desde 1927 · Almagro',
+  descripcion = 'Pin Pun, pizzería al molde fundada en 1927 en Av. Corrientes 3954, Almagro. Muzzarella, fugazzeta rellena, empanadas fritas y vermut con sifón. Casi un siglo de tradición porteña.',
+  tema = 'claro',
+  canonical,
+  ogImage = 'https://images.unsplash.com/photo-1593504049359-74330189a345?auto=format&fit=crop&w=1200&q=80',
+} = Astro.props;
+
+const urlCanonica = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={urlCanonica} />
+
+    <!-- Open Graph / redes sociales -->
+    <meta property="og:type" content="restaurant.restaurant" />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_AR" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Favicon (placeholder simple en SVG) -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23C73E1D'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='middle' fill='%23F5EFE6' font-family='Georgia,serif' font-size='16' font-weight='700'%3EP%3C/text%3E%3C/svg%3E"
+    />
+
+    <!-- Schema.org: información estructurada del restaurante -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Restaurant',
+      name: 'Pin Pun',
+      description: descripcion,
+      foundingDate: '1927',
+      servesCuisine: ['Pizza', 'Argentine', 'Italian'],
+      priceRange: '$$',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Av. Corrientes 3954',
+        addressLocality: 'Almagro',
+        addressRegion: 'CABA',
+        addressCountry: 'AR',
+      },
+      telephone: '+54-11-4862-3260',
+      url: urlCanonica,
+    })} />
+
+    <!-- Preconnect a Unsplash para acelerar imágenes -->
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    <link rel="dns-prefetch" href="https://images.unsplash.com" />
+  </head>
+
+  <body class:list={[tema === 'oscuro' && 'theme-dark']}>
+    <Loader />
+
+    <div class="scroll-progress" aria-hidden="true">
+      <div class="scroll-progress__bar"></div>
+    </div>
+
+    <Header tema={tema} />
+
+    <main>
+      <slot />
+    </main>
+
+    <Footer />
+
+    <!-- Animaciones globales: GSAP + Lenis + cursor + reveals -->
+    <script>
+      import '../scripts/animaciones';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  /* Estado inicial: el body se vuelve interactivo cuando el loader termina */
+  body:not(.is-ready) main {
+    /* Evita scroll mientras el loader corre */
+    overflow: hidden;
+  }
+</style>

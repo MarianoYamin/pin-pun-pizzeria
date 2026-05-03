@@ -1,0 +1,757 @@
+---
+/**
+ * @archivo    index.astro
+ * @modulo     Página de Inicio
+ * @descripcion Home con hero, intro editorial, pizzas emblema, teaser de
+ *              experiencia, historia, prensa, galería preview y CTA visita.
+ * @version    1.0.0
+ */
+
+import Layout from '../layouts/Layout.astro';
+import Marquee from '../components/Marquee.astro';
+import PizzaCard from '../components/PizzaCard.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import { carta } from '../data/menu';
+import { negocio, pilares, prensa } from '../data/contenido';
+import { hero, pizzas, ambiente, galeria } from '../data/imagenes';
+
+// Tres pizzas emblema para el showcase del Home
+const pizzasEmblema = [
+  { item: carta[0].items[0], img: pizzas.muzzarella }, // Muzzarella 500g
+  { item: carta[0].items[1], img: pizzas.especial },   // Especial Pin-Pun
+  { item: carta[0].items[2], img: pizzas.fugazzeta },  // Fugazzeta rellena
+];
+
+// Galería preview (8 fotos)
+const galeriaPreview = galeria.slice(0, 8);
+---
+
+<Layout
+  titulo="Pin Pun · Pizzería desde 1927 · Almagro · Buenos Aires"
+  descripcion="Pizzería al molde fundada en 1927 en Av. Corrientes 3954, Almagro. Muzzarella 500g, fugazzeta rellena, empanadas fritas y vermut con sifón. Casi un siglo de tradición porteña."
+>
+
+  {/* ── HERO ─────────────────────────────────────────────────────── */}
+  <section class="hero">
+    <div class="hero__media">
+      <img src={hero.principal} alt={hero.alt} fetchpriority="high" />
+      <div class="hero__overlay"></div>
+    </div>
+
+    <div class="hero__content container">
+      <p class="hero__eyebrow">Almagro · Av. Corrientes 3954</p>
+      <h1 class="hero__title" data-split>
+        Una porción de
+      </h1>
+      <h1 class="hero__title hero__title--accent display">
+        historia.
+      </h1>
+      <p class="hero__bajada reveal">
+        Desde 1927 amasamos la misma masa, encendemos los mismos hornos<br/>
+        y atendemos la misma barra. <em>Casi un siglo</em> al molde.
+      </p>
+      <div class="hero__actions reveal">
+        <a href="/carta" class="btn btn--primary" data-magnetic>Ver la carta</a>
+        <a href="/historia" class="btn btn--ghost" data-magnetic>Conocer la historia</a>
+      </div>
+    </div>
+
+    <div class="hero__year">
+      <span class="script">desde</span>
+      <span class="hero__year-num">1927</span>
+    </div>
+
+    <div class="hero__scroll">
+      <span>Deslizá para descubrir</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <Marquee />
+
+  {/* ── INTRO EDITORIAL ──────────────────────────────────────────── */}
+  <section class="section intro">
+    <div class="container intro__grid">
+      <div class="intro__copy">
+        <p class="eyebrow reveal">La casa</p>
+        <h2 class="intro__claim" data-split>
+          Pizza al molde, mostrador de azulejos y vermut con sifón.
+        </h2>
+        <p class="intro__texto reveal">
+          Pin Pun nació en 1927 de la mano de los mismos italianos que poco después fundarían Güerrín. Casi cien años después seguimos sin reservas, sin cubierto y sin atajos. La masa fermenta veinticuatro horas, la mozzarella es entera, las empanadas se cierran a mano. Lo demás —el tiempo, el barrio, el cariño— lo pone Almagro.
+        </p>
+        <a href="/historia" class="intro__link" data-cursor>Leer la historia completa →</a>
+      </div>
+
+      <div class="intro__media" data-clip>
+        <img src={ambiente.salon} alt="Salón de Pin Pun con mesas de madera y luz cálida" loading="lazy" />
+      </div>
+    </div>
+
+    <div class="intro__stats container">
+      <div class="intro__stat reveal">
+        <span class="intro__stat-num">98</span>
+        <span class="intro__stat-label">años de tradición</span>
+      </div>
+      <div class="intro__stat reveal">
+        <span class="intro__stat-num">31</span>
+        <span class="intro__stat-label">variedades de pizza</span>
+      </div>
+      <div class="intro__stat reveal">
+        <span class="intro__stat-num">500<small>g</small></span>
+        <span class="intro__stat-label">de muzzarella por pizza</span>
+      </div>
+      <div class="intro__stat reveal">
+        <span class="intro__stat-num">2</span>
+        <span class="intro__stat-label">locales en CABA</span>
+      </div>
+    </div>
+  </section>
+
+  {/* ── PIZZAS EMBLEMA ───────────────────────────────────────────── */}
+  <section class="section emblema">
+    <div class="container">
+      <SectionTitle
+        eyebrow="Pizzas emblema"
+        titulo="Tres clásicas que explican por qué seguimos abiertos."
+        bajada="La carta tiene treinta y un variedades. Estas tres son la respuesta cuando alguien pregunta qué pedir la primera vez."
+      />
+
+      <div class="emblema__grid">
+        {pizzasEmblema.map(({ item, img }) => (
+          <PizzaCard item={item} imagen={img} />
+        ))}
+      </div>
+
+      <div class="emblema__cta">
+        <a href="/carta" class="btn btn--ghost" data-magnetic>Ver toda la carta</a>
+      </div>
+    </div>
+  </section>
+
+  {/* ── EXPERIENCIA TEASER ───────────────────────────────────────── */}
+  <section class="section experiencia-teaser theme-dark">
+    <div class="container experiencia-teaser__grid">
+      <div class="experiencia-teaser__intro">
+        <p class="eyebrow reveal">La experiencia</p>
+        <h2 class="experiencia-teaser__h" data-split>
+          No venís solo a comer. Entrás en una escena.
+        </h2>
+        <p class="experiencia-teaser__txt reveal">
+          Cuatro elementos que se mantienen igual desde 1950: el salón, la pizza al molde, la barra al paso y la atención de mozos que conocen la mesa de memoria.
+        </p>
+        <a href="/experiencia" class="btn btn--ghost" data-magnetic>Ver la experiencia →</a>
+      </div>
+
+      <ul class="experiencia-teaser__lista">
+        {pilares.map((pilar) => (
+          <li class="experiencia-teaser__pilar reveal">
+            <span class="experiencia-teaser__num">{pilar.numero}</span>
+            <div>
+              <h3 class="experiencia-teaser__t">{pilar.titulo}</h3>
+              <p>{pilar.bajada}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ── HISTORIA TEASER ──────────────────────────────────────────── */}
+  <section class="section historia-teaser">
+    <div class="container historia-teaser__grid">
+      <div class="historia-teaser__media" data-clip>
+        <img src={ambiente.azulejos} alt="Azulejos blanco y negro vintage" loading="lazy" />
+        <span class="historia-teaser__year script">1927</span>
+      </div>
+
+      <div class="historia-teaser__copy">
+        <p class="eyebrow reveal">La historia</p>
+        <h2 class="historia-teaser__h" data-split>
+          Hasta Gardel paraba a comerse una porción.
+        </h2>
+        <p class="historia-teaser__p reveal">
+          La leyenda dice que Carlos Gardel, vecino de unas cuadras, paraba en el mostrador antes de entrar al teatro. Pedía la Especial: jamón cocido, morrones asados y mozzarella al molde. La fórmula no cambió desde entonces.
+        </p>
+        <a href="/historia" class="btn btn--ghost" data-magnetic>Leer los cien años →</a>
+      </div>
+    </div>
+  </section>
+
+  {/* ── PRENSA / RESEÑAS TEASER ──────────────────────────────────── */}
+  <section class="section prensa">
+    <div class="container">
+      <SectionTitle
+        eyebrow="Reseñas y prensa"
+        titulo="Lo que dicen de nosotros, desde Clarín hasta tu vecino."
+        alineacion="centro"
+      />
+
+      <ul class="prensa__lista">
+        {prensa.map((p) => (
+          <li class="prensa__item reveal">
+            <span class="prensa__medio">{p.medio}</span>
+            <p class="prensa__nota">{p.nota}</p>
+          </li>
+        ))}
+      </ul>
+
+      <div class="prensa__cta">
+        <a href="/resenas" class="btn btn--ghost" data-magnetic>Ver todas las reseñas →</a>
+      </div>
+    </div>
+  </section>
+
+  {/* ── GALERÍA PREVIEW ──────────────────────────────────────────── */}
+  <section class="section galeria-teaser">
+    <div class="container">
+      <SectionTitle
+        eyebrow="Galería"
+        titulo="Imágenes de la cocina, la barra y el salón."
+      />
+
+      <div class="galeria-teaser__grid">
+        {galeriaPreview.map((g, idx) => (
+          <div
+            class:list={['galeria-teaser__cell', `galeria-teaser__cell--${idx % 4}`]}
+            data-clip
+          >
+            <img src={g.src} alt={g.alt} loading="lazy" />
+          </div>
+        ))}
+      </div>
+
+      <div class="galeria-teaser__cta">
+        <a href="/galeria" class="btn btn--ghost" data-magnetic>Ver galería completa →</a>
+      </div>
+    </div>
+  </section>
+
+  <Marquee variante="oscuro" frases={['Pin Pun · 1927', 'Av. Corrientes 3954', 'Almagro', 'Pizza al molde', 'Empanadas fritas', 'Vermut con sifón']} />
+
+  {/* ── CTA VISITA FINAL ─────────────────────────────────────────── */}
+  <section class="section cta-final">
+    <div class="container cta-final__inner">
+      <p class="eyebrow reveal">Visitanos</p>
+      <h2 class="cta-final__h" data-split>
+        Te esperamos donde te esperamos hace 98 años.
+      </h2>
+      <p class="cta-final__direccion reveal">
+        <strong>{negocio.ubicaciones[0].direccion}</strong> · {negocio.ubicaciones[0].ciudad}<br/>
+        {negocio.ubicaciones[0].horarios}
+      </p>
+      <div class="cta-final__actions reveal">
+        <a href="/contacto" class="btn btn--primary" data-magnetic>Cómo llegar</a>
+        <a href={`tel:${negocio.ubicaciones[0].telefonos[0].replace(/\s/g, '')}`} class="btn btn--ghost" data-magnetic>
+          Llamar al {negocio.ubicaciones[0].telefonos[0]}
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  /* ── HERO ───────────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    color: var(--color-crema);
+    overflow: hidden;
+    padding-bottom: var(--space-2xl);
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.05);
+    animation: hero-zoom 12s ease-out forwards;
+  }
+
+  @keyframes hero-zoom {
+    to { transform: scale(1); }
+  }
+
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(10, 9, 8, 0.4) 0%,
+      rgba(10, 9, 8, 0.55) 50%,
+      rgba(10, 9, 8, 0.85) 100%
+    );
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .hero__eyebrow {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-dorado);
+    margin-bottom: 1.6rem;
+  }
+
+  .hero__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-3xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--color-crema);
+  }
+
+  .hero__title--accent {
+    color: var(--color-dorado);
+    font-weight: 400;
+  }
+
+  .hero__bajada {
+    font-family: var(--font-body);
+    font-size: var(--fs-md);
+    font-weight: 300;
+    line-height: 1.55;
+    color: rgba(245, 239, 230, 0.85);
+    margin-top: 1.8rem;
+    max-width: 50ch;
+  }
+
+  .hero__bajada em {
+    font-style: italic;
+    color: var(--color-dorado);
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.4rem;
+    flex-wrap: wrap;
+  }
+
+  .hero__actions .btn--ghost { color: var(--color-crema); }
+
+  .hero__year {
+    position: absolute;
+    top: 50%;
+    right: var(--gutter);
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: right center;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    color: var(--color-dorado);
+    z-index: 1;
+    font-size: var(--fs-sm);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .hero__year-num {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--color-crema);
+  }
+
+  @media (max-width: 768px) { .hero__year { display: none; } }
+
+  .hero__scroll {
+    position: absolute;
+    bottom: 2rem;
+    right: var(--gutter);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245, 239, 230, 0.6);
+  }
+
+  .hero__scroll-line {
+    width: 60px;
+    height: 1px;
+    background-color: var(--color-dorado);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero__scroll-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-crema);
+    animation: scroll-line 2s ease-in-out infinite;
+  }
+
+  @keyframes scroll-line {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  /* ── INTRO ──────────────────────────────────────────────────────── */
+  .intro__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .intro__grid { grid-template-columns: 1.1fr 1fr; gap: var(--space-2xl); }
+  }
+
+  .intro__claim {
+    font-size: var(--fs-xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    margin-block: 1.4rem 1.8rem;
+  }
+
+  .intro__texto {
+    font-size: var(--fs-md);
+    color: var(--color-text-soft);
+    line-height: 1.65;
+    font-weight: 300;
+    max-width: 50ch;
+  }
+
+  .intro__link {
+    display: inline-block;
+    margin-top: 1.6rem;
+    color: var(--color-tomate);
+    font-weight: 500;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+    transition: color var(--t-fast) var(--ease-out);
+  }
+
+  .intro__link:hover { color: var(--color-tomate-dark); }
+
+  .intro__media {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .intro__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .intro__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-line);
+  }
+
+  @media (min-width: 768px) {
+    .intro__stats { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .intro__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .intro__stat-num {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--color-tomate);
+  }
+
+  .intro__stat-num small {
+    font-size: 0.45em;
+    color: var(--color-text-soft);
+  }
+
+  .intro__stat-label {
+    font-size: var(--fs-sm);
+    color: var(--color-text-soft);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── EMBLEMA ────────────────────────────────────────────────────── */
+  .emblema__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .emblema__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .emblema__cta {
+    margin-top: var(--space-xl);
+    text-align: center;
+  }
+
+  /* ── EXPERIENCIA TEASER ─────────────────────────────────────────── */
+  .experiencia-teaser {
+    background-color: var(--color-carbon);
+    color: var(--color-crema);
+  }
+
+  .experiencia-teaser__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 1024px) {
+    .experiencia-teaser__grid { grid-template-columns: 1fr 1fr; gap: var(--space-2xl); }
+  }
+
+  .experiencia-teaser__h {
+    font-size: var(--fs-xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--color-crema);
+    margin-block: 1.4rem 1.8rem;
+  }
+
+  .experiencia-teaser__txt {
+    color: rgba(245, 239, 230, 0.75);
+    font-size: var(--fs-md);
+    line-height: 1.65;
+    margin-bottom: 1.8rem;
+    font-weight: 300;
+  }
+
+  .experiencia-teaser__lista {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .experiencia-teaser__pilar {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    padding-block: 1.6rem;
+    border-bottom: 1px solid rgba(245, 239, 230, 0.12);
+  }
+
+  .experiencia-teaser__pilar:last-child { border-bottom: none; }
+
+  .experiencia-teaser__num {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--color-dorado);
+    line-height: 1;
+  }
+
+  .experiencia-teaser__t {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--color-crema);
+    margin-bottom: 0.4rem;
+  }
+
+  .experiencia-teaser__pilar p {
+    color: rgba(245, 239, 230, 0.65);
+    font-size: var(--fs-sm);
+    line-height: 1.55;
+  }
+
+  /* ── HISTORIA TEASER ────────────────────────────────────────────── */
+  .historia-teaser__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .historia-teaser__grid {
+      grid-template-columns: 1fr 1.1fr;
+      gap: var(--space-2xl);
+    }
+  }
+
+  .historia-teaser__media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .historia-teaser__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.3) sepia(0.15);
+  }
+
+  .historia-teaser__year {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    font-size: clamp(3rem, 8vw, 5rem);
+    color: var(--color-crema);
+    line-height: 1;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .historia-teaser__h {
+    font-size: var(--fs-xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    margin-block: 1.4rem 1.8rem;
+  }
+
+  .historia-teaser__p {
+    font-size: var(--fs-md);
+    color: var(--color-text-soft);
+    line-height: 1.65;
+    font-weight: 300;
+    margin-bottom: 1.8rem;
+    max-width: 50ch;
+  }
+
+  /* ── PRENSA ─────────────────────────────────────────────────────── */
+  .prensa__lista {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  @media (min-width: 768px) {
+    .prensa__lista { grid-template-columns: 1fr 1fr; }
+  }
+
+  .prensa__item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    padding-block: 1.8rem;
+    padding-inline: 1.5rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  @media (min-width: 768px) {
+    .prensa__item:nth-child(odd) { border-right: 1px solid var(--color-line); }
+  }
+
+  .prensa__medio {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--color-tomate);
+    min-width: 7rem;
+  }
+
+  .prensa__nota {
+    font-size: var(--fs-base);
+    color: var(--color-text);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .prensa__cta {
+    margin-top: var(--space-xl);
+    text-align: center;
+  }
+
+  /* ── GALERÍA TEASER ─────────────────────────────────────────────── */
+  .galeria-teaser__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .galeria-teaser__grid { grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+  }
+
+  .galeria-teaser__cell {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--radius);
+  }
+
+  .galeria-teaser__cell--0 { aspect-ratio: 4 / 5; }
+  .galeria-teaser__cell--3 { aspect-ratio: 4 / 5; }
+
+  .galeria-teaser__cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s var(--ease-out);
+  }
+
+  .galeria-teaser__cell:hover img {
+    transform: scale(1.06);
+  }
+
+  .galeria-teaser__cta {
+    margin-top: var(--space-xl);
+    text-align: center;
+  }
+
+  /* ── CTA FINAL ──────────────────────────────────────────────────── */
+  .cta-final {
+    background-color: var(--color-crema-soft);
+  }
+
+  .cta-final__inner {
+    text-align: center;
+    max-width: 50ch;
+    margin-inline: auto;
+  }
+
+  .cta-final__h {
+    font-size: var(--fs-2xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    margin-block: 1.4rem;
+  }
+
+  .cta-final__direccion {
+    font-size: var(--fs-md);
+    color: var(--color-text-soft);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .cta-final__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+/**
+ * @archivo    Marquee.astro
+ * @modulo     Marquee infinito
+ * @descripcion Banda horizontal con frases que se desplazan en loop.
+ *              Refuerza identidad ("Desde 1927 · Almagro · Buenos Aires").
+ * @version    1.0.0
+ */
+
+import { marqueeFrases } from '../data/contenido';
+
+interface Props {
+  frases?: string[];
+  variante?: 'claro' | 'oscuro';
+}
+
+const { frases = marqueeFrases, variante = 'claro' } = Astro.props;
+
+// Duplicamos el track para crear loop sin saltos visibles.
+const trackItems = [...frases, ...frases];
+---
+
+<div class:list={['marquee', variante === 'oscuro' && 'marquee--dark']}>
+  <div class="marquee__track">
+    {trackItems.map((frase) => (
+      <span class="marquee__item">{frase}</span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee--dark {
+    background-color: var(--color-carbon);
+    color: var(--color-crema);
+    border-color: rgba(245, 239, 230, 0.12);
+  }
+  .marquee--dark .marquee__item {
+    color: var(--color-crema);
+  }
+</style>
