@@ -2,9 +2,11 @@
 /**
  * @archivo    Header.astro
  * @modulo     Navegación principal
- * @descripcion Header sticky con logo, links a las 7 páginas y CTA.
- *              En mobile colapsa a menú hamburguesa fullscreen.
- * @version    1.0.0
+ * @descripcion Header sticky con logo + nav desktop + CTA, y menú overlay
+ *              fullscreen en mobile con animación stagger.
+ *              El menú mobile vive FUERA del <header> para evitar
+ *              conflictos de z-index y contención.
+ * @version    2.0.0
  */
 
 interface Props {
@@ -41,7 +43,6 @@ const ruta = Astro.url.pathname;
               <a
                 href={link.href}
                 class:list={['header__link', activo && 'is-active']}
-                data-cursor
               >
                 {link.label}
               </a>
@@ -55,38 +56,67 @@ const ruta = Astro.url.pathname;
       Visitanos
     </a>
 
-    <button class="header__burger" aria-label="Abrir menú" data-burger>
-      <span></span>
-      <span></span>
+    <button class="header__burger" aria-label="Abrir menú" aria-expanded="false" data-burger>
+      <span class="header__burger-line"></span>
+      <span class="header__burger-line"></span>
+      <span class="header__burger-label">Menú</span>
     </button>
-  </div>
-
-  <!-- Menú mobile fullscreen -->
-  <div class="header__mobile" data-mobile-menu aria-hidden="true">
-    <ul class="header__mobile-list">
-      {links.map((link) => (
-        <li><a href={link.href} class="header__mobile-link">{link.label}</a></li>
-      ))}
-    </ul>
-    <div class="header__mobile-foot">
-      <p class="script">Av. Corrientes 3954 · Almagro</p>
-      <p>11 4862-3260</p>
-    </div>
   </div>
 </header>
 
+{/* Menú mobile fullscreen — fuera del header para z-index limpio */}
+<div class="mobile-menu" data-mobile-menu aria-hidden="true">
+  <div class="mobile-menu__bg" aria-hidden="true"></div>
+
+  <nav class="mobile-menu__nav" aria-label="Navegación mobile">
+    <p class="mobile-menu__eyebrow">Pin Pun · 1927</p>
+
+    <ul class="mobile-menu__list">
+      {links.map((link, i) => {
+        const activo = ruta === link.href || (link.href !== '/' && ruta.startsWith(link.href));
+        return (
+          <li class="mobile-menu__item" style={`--i: ${i}`}>
+            <a
+              href={link.href}
+              class:list={['mobile-menu__link', activo && 'is-active']}
+            >
+              <span class="mobile-menu__num">0{i + 1}</span>
+              <span class="mobile-menu__text">{link.label}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+
+    <div class="mobile-menu__foot">
+      <p class="mobile-menu__foot-line">Av. Corrientes 3954 · Almagro</p>
+      <a href="tel:1148623260" class="mobile-menu__foot-tel">11 4862-3260 →</a>
+      <a
+        href="https://www.instagram.com/pinpuncorrientes/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mobile-menu__foot-ig"
+      >
+        @pinpuncorrientes
+      </a>
+    </div>
+  </nav>
+</div>
+
 <style>
+  /* ── HEADER (común mobile + desktop) ──────────────────────────── */
   .header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 50;
-    background-color: rgba(245, 239, 230, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    z-index: 60;
+    background-color: rgba(245, 239, 230, 0.88);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
     border-bottom: 1px solid var(--color-line);
-    transition: background-color var(--t-fast) var(--ease-out);
+    transition: background-color var(--t-fast) var(--ease-out),
+                transform 0.4s var(--ease-out);
   }
 
   .header--dark {
@@ -98,8 +128,9 @@ const ruta = Astro.url.pathname;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2rem;
-    padding-block: 1rem;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+    min-height: 64px;
   }
 
   /* Logo */
@@ -108,11 +139,12 @@ const ruta = Astro.url.pathname;
     flex-direction: column;
     line-height: 1;
     gap: 0.15rem;
+    flex-shrink: 0;
   }
 
   .header__logo-name {
     font-family: var(--font-display);
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 500;
     font-style: italic;
     letter-spacing: -0.02em;
@@ -123,13 +155,13 @@ const ruta = Astro.url.pathname;
 
   .header__logo-year {
     font-family: var(--font-body);
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
+    font-size: 0.6rem;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
     color: var(--color-tomate);
   }
 
-  /* Nav */
+  /* Nav desktop */
   .header__nav {
     display: none;
   }
@@ -180,137 +212,314 @@ const ruta = Astro.url.pathname;
     color: var(--color-crema);
   }
 
-  /* CTA */
+  /* CTA desktop */
   .header__cta {
     display: none;
   }
 
   /* Burger mobile */
   .header__burger {
-    width: 44px;
-    height: 44px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    gap: 6px;
+    gap: 0.6rem;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: transparent;
+    transition: background-color var(--t-fast) var(--ease-out),
+                border-color var(--t-fast) var(--ease-out);
+    z-index: 71;
+    position: relative;
   }
 
-  .header__burger span {
+  .header__burger:hover {
+    background-color: var(--color-tomate);
+    border-color: var(--color-tomate);
+  }
+
+  .header__burger:hover .header__burger-line {
+    background-color: var(--color-crema);
+  }
+
+  .header__burger:hover .header__burger-label {
+    color: var(--color-crema);
+  }
+
+  .header--dark .header__burger {
+    border-color: rgba(245, 239, 230, 0.2);
+  }
+
+  .header__burger-line {
     display: block;
-    width: 24px;
+    width: 18px;
     height: 1.5px;
     background-color: var(--color-text);
-    transition: transform var(--t-fast) var(--ease-out),
+    transition: transform 0.4s var(--ease-out),
+                background-color var(--t-fast) var(--ease-out),
                 opacity var(--t-fast) var(--ease-out);
+    transform-origin: center;
   }
 
-  .header--dark .header__burger span { background-color: var(--color-crema); }
-
-  .header__burger.is-open span:nth-child(1) {
-    transform: translateY(4px) rotate(45deg);
-  }
-  .header__burger.is-open span:nth-child(2) {
-    transform: translateY(-4px) rotate(-45deg);
+  .header--dark .header__burger-line {
+    background-color: var(--color-crema);
   }
 
-  /* Mobile menu — oculto por defecto, slide-in al abrir */
-  .header__mobile {
-    position: fixed;
-    inset: 0;
-    background-color: var(--color-carbon);
+  .header__burger-label {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    transition: color var(--t-fast) var(--ease-out);
+  }
+
+  .header--dark .header__burger-label {
     color: var(--color-crema);
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 6rem var(--gutter) var(--space-xl);
-    transform: translateY(-100%);
-    visibility: hidden;
+  }
+
+  /* Estado abierto del burger: X */
+  .header__burger.is-open .header__burger-line:nth-child(1) {
+    transform: translateY(3px) rotate(45deg);
+  }
+  .header__burger.is-open .header__burger-line:nth-child(2) {
+    transform: translateY(-3px) rotate(-45deg);
+  }
+  .header__burger.is-open .header__burger-label {
     opacity: 0;
-    pointer-events: none;
-    transition: transform var(--t-med) var(--ease-in-out),
-                opacity var(--t-med) var(--ease-in-out),
-                visibility 0s linear var(--t-med);
-    z-index: 49;
-    display: none;  /* oculto en desktop, se reactiva en mobile */
-  }
-
-  /* En mobile: se muestra como flex */
-  @media (max-width: 1023px) {
-    .header__mobile {
-      display: flex;
-    }
-  }
-
-  .header__mobile.is-open {
-    transform: translateY(0);
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-    transition: transform var(--t-med) var(--ease-in-out),
-                opacity var(--t-med) var(--ease-in-out);
-  }
-
-  .header__mobile-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-
-  .header__mobile-link {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 10vw, 4rem);
-    font-style: italic;
-    color: var(--color-crema);
-    line-height: 1;
-  }
-
-  .header__mobile-foot {
-    color: var(--color-dorado);
-    font-size: var(--fs-sm);
-    line-height: 1.8;
-  }
-
-  .header__mobile-foot .script {
-    font-size: 1.4rem;
-    color: var(--color-crema);
+    transform: translateX(10px);
   }
 
   /* Desktop: mostrar nav y CTA, ocultar burger */
   @media (min-width: 1024px) {
+    .header__inner { gap: 2rem; padding-block: 1rem; }
     .header__nav { display: block; }
     .header__cta { display: inline-flex; }
     .header__burger { display: none; }
   }
 </style>
 
+<style is:global>
+  /* ── MENÚ MOBILE — overlay fullscreen ─────────────────────────────
+     Vive fuera del header para evitar conflictos de stacking.
+     OCULTO POR DEFECTO con display: none (no se renderiza en absoluto).
+     Solo se muestra cuando tiene la clase .is-open.
+  */
+  .mobile-menu {
+    display: none; /* importante: oculto a nivel de árbol cuando no está abierto */
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .mobile-menu.is-open {
+    display: flex;
+  }
+
+  /* Solo se activa en pantallas < 1024px */
+  @media (min-width: 1024px) {
+    .mobile-menu,
+    .mobile-menu.is-open {
+      display: none !important;
+    }
+  }
+
+  /* Fondo del menú con animación de barrido vertical */
+  .mobile-menu__bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(199, 62, 29, 0.18), transparent 60%),
+      linear-gradient(180deg, #1a1411 0%, #0A0908 100%);
+    transform: translateY(-100%);
+    transition: transform 0.7s cubic-bezier(0.77, 0, 0.18, 1);
+    z-index: 0;
+  }
+
+  .mobile-menu.is-open .mobile-menu__bg {
+    transform: translateY(0);
+  }
+
+  /* Contenedor del nav */
+  .mobile-menu__nav {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 6rem var(--gutter) 2.5rem;
+    color: var(--color-crema);
+    opacity: 0;
+    transition: opacity 0.3s ease 0.4s;
+  }
+
+  .mobile-menu.is-open .mobile-menu__nav {
+    opacity: 1;
+  }
+
+  .mobile-menu__eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-dorado);
+    margin-bottom: 2rem;
+  }
+
+  .mobile-menu__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mobile-menu__item {
+    overflow: hidden;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.5s ease;
+    transition-delay: calc(0.45s + var(--i) * 0.06s);
+  }
+
+  .mobile-menu.is-open .mobile-menu__item {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .mobile-menu__link {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.4rem;
+    color: var(--color-crema);
+    text-decoration: none;
+    transition: color var(--t-fast) var(--ease-out),
+                padding-left var(--t-fast) var(--ease-out);
+  }
+
+  .mobile-menu__link:hover,
+  .mobile-menu__link.is-active {
+    color: var(--color-dorado);
+    padding-left: 0.5rem;
+  }
+
+  .mobile-menu__num {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--color-tomate);
+    min-width: 2rem;
+  }
+
+  .mobile-menu__text {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 9vw, 3.2rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  /* Pie del menú */
+  .mobile-menu__foot {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(245, 239, 230, 0.15);
+  }
+
+  .mobile-menu__foot-line {
+    font-family: var(--font-script);
+    font-size: 1.5rem;
+    color: var(--color-crema);
+    line-height: 1.2;
+  }
+
+  .mobile-menu__foot-tel {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--color-dorado);
+    transition: transform var(--t-fast) var(--ease-out);
+    align-self: flex-start;
+  }
+
+  .mobile-menu__foot-tel:hover {
+    transform: translateX(4px);
+  }
+
+  .mobile-menu__foot-ig {
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: rgba(245, 239, 230, 0.6);
+    margin-top: 0.5rem;
+    transition: color var(--t-fast) var(--ease-out);
+  }
+
+  .mobile-menu__foot-ig:hover { color: var(--color-crema); }
+
+  /* Cuando está abierto, bloquear scroll del body */
+  body.menu-open {
+    overflow: hidden;
+  }
+</style>
+
 <script>
-  // Toggle del menú mobile
+  // Toggle del menú mobile con bloqueo de scroll y aria-expanded
   const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
   const mobile = document.querySelector<HTMLElement>('[data-mobile-menu]');
 
+  function cerrarMenu() {
+    if (!mobile || !burger) return;
+    mobile.classList.remove('is-open');
+    burger.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+    mobile.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('menu-open');
+  }
+
+  function abrirMenu() {
+    if (!mobile || !burger) return;
+    mobile.classList.add('is-open');
+    burger.classList.add('is-open');
+    burger.setAttribute('aria-expanded', 'true');
+    mobile.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('menu-open');
+  }
+
   burger?.addEventListener('click', () => {
-    const abierto = mobile?.classList.toggle('is-open');
-    burger.classList.toggle('is-open');
-    mobile?.setAttribute('aria-hidden', abierto ? 'false' : 'true');
-    document.body.style.overflow = abierto ? 'hidden' : '';
+    const abierto = mobile?.classList.contains('is-open');
+    if (abierto) cerrarMenu();
+    else abrirMenu();
   });
 
   // Cerrar al clickear un link
   mobile?.querySelectorAll('a').forEach((a) => {
-    a.addEventListener('click', () => {
-      mobile.classList.remove('is-open');
-      burger?.classList.remove('is-open');
-      document.body.style.overflow = '';
-    });
+    a.addEventListener('click', cerrarMenu);
   });
 
-  // Header con fondo más sólido al hacer scroll
+  // Cerrar con tecla Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobile?.classList.contains('is-open')) {
+      cerrarMenu();
+    }
+  });
+
+  // Header con auto-hide al hacer scroll hacia abajo (pero no si el menú está abierto)
   const header = document.querySelector<HTMLElement>('[data-header]');
   if (header) {
     let ultimoScroll = 0;
     window.addEventListener('scroll', () => {
+      if (document.body.classList.contains('menu-open')) return;
       const y = window.scrollY;
-      // ocultar al bajar, mostrar al subir
       if (y > 100 && y > ultimoScroll) {
         header.style.transform = 'translateY(-100%)';
       } else {
@@ -318,6 +527,5 @@ const ruta = Astro.url.pathname;
       }
       ultimoScroll = y;
     });
-    header.style.transition = 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease';
   }
 </script>
