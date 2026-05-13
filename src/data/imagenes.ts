@@ -21,7 +21,7 @@ const FOTOS = {
   pizzaMargherita:  'photo-1574071318508-1cdbab80d002', // margherita
   pizzaQueso:       'photo-1513104890138-7c749659a591', // pizza con queso
   pizzaNapolitana:  'photo-1604917877934-07d8d248d396', // pizza con tomate
-  pizzaAceitunas:   'photo-1601312378427-822b2b41da35', // pizza con aceitunas
+  pizzaEspecial:    'photo-1767065603670-d44bcdf1da5e', // pizza con pollo, piña y cebolla morada — reemplaza la del piano
   pizzaDetalle:     'photo-1571407970349-bc81e7e96d47', // detalle de pizza
   salonMesas:       'photo-1555396273-367ea4eb4db5',    // salón con mesas
   mostradorBarra:   'photo-1517248135467-4c7edcad34c4', // mostrador / barra
@@ -36,7 +36,7 @@ export const hero = {
 // ── Pizzas (cards de carta + emblema en home) ─────────────────────────
 export const pizzas = {
   muzzarella: u(FOTOS.pizzaMuzza, 1400),
-  especial:   u(FOTOS.pizzaAceitunas, 1400),
+  especial:   u(FOTOS.pizzaEspecial, 1400),
   fugazzeta:  u(FOTOS.pizzaFugazzeta, 1400),
   verde:      u(FOTOS.pizzaMargherita, 1400),
   provolone:  u(FOTOS.pizzaQueso, 1400),
@@ -47,7 +47,7 @@ export const pizzas = {
 
 // ── Empanadas y otros platos (reusamos imágenes de pizza/comida) ──────
 export const platos = {
-  empanadas: u(FOTOS.pizzaAceitunas, 1400),
+  empanadas: u(FOTOS.pizzaEspecial, 1400),
   faina:     u(FOTOS.pizzaQueso, 1400),
   vermut:    u(FOTOS.mostradorBarra, 1400),
 };
@@ -74,7 +74,7 @@ export const vintage = {
 export const galeria = [
   { src: u(FOTOS.pizzaHero, 1400),       alt: 'Pizza muzzarella al molde recién salida del horno', tipo: 'producto' },
   { src: u(FOTOS.salonMesas, 1400),      alt: 'Salón principal con mesas de madera y luz cálida', tipo: 'local' },
-  { src: u(FOTOS.pizzaAceitunas, 1400),  alt: 'Pizza con aceitunas y mozzarella', tipo: 'producto' },
+  { src: u(FOTOS.pizzaEspecial, 1400),  alt: 'Pizza Especial Pin-Pun con pollo y morrones', tipo: 'producto' },
   { src: u(FOTOS.mostradorBarra, 1400),  alt: 'Mostrador y barra de pie', tipo: 'local' },
   { src: u(FOTOS.pizzaFugazzeta, 1400),  alt: 'Fugazzeta rellena con cebolla y queso', tipo: 'producto' },
   { src: u(FOTOS.pizzaMuzza, 1400),      alt: 'Pizza de muzzarella en plato', tipo: 'producto' },
